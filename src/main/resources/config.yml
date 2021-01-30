@@ -1,0 +1,70 @@
+# Should the plugin be allowed to check for updates?
+update-checker: true
+
+language:
+  compress-successful: "&aSuccessfully compressed all items."
+  compress-failure: "&cThere were no items to compress."
+  tool-give: "&aYou gave a block compressor tool to &7{target}&a."
+  tool-get: "&aYou have received a block compressor tool."
+
+# Changing values here will not affect older compressor tools
+compressor-tool:
+  material: GOLDEN_HOE
+  display-name: "&fCompressor Tool"
+  lore:
+    - "&7Right click a block with an"
+    - "&7inventory to compress the "
+    - "&7contents."
+
+# You can add and remove your own custom recipes as well
+# Use XMaterial names, not Bukkit names
+recipes:
+  coal:
+    input: COAL
+    output: COAL_BLOCK
+    amount: 9
+
+  iron_nugget:
+    input: IRON_NUGGET
+    output: IRON_INGOT
+    amount: 9
+
+  iron:
+    input: IRON_INGOT
+    output: IRON_BLOCK
+    amount: 9
+
+  lapis:
+    input: LAPIS_LAZULI
+    output: LAPIS_BLOCK
+    amount: 9
+
+  gold_nugget:
+    input: GOLD_NUGGET
+    output: GOLD_INGOT
+    amount: 9
+
+  gold:
+    input: GOLD_INGOT
+    output: GOLD_BLOCK
+    amount: 9
+
+  quartz:
+    input: QUARTZ
+    output: QUARTZ_BLOCK
+    amount: 4
+
+  redstone:
+    input: REDSTONE
+    output: REDSTONE_BLOCK
+    amount: 9
+
+  diamond:
+    input: DIAMOND
+    output: DIAMOND_BLOCK
+    amount: 9
+
+  emerald:
+    input: EMERALD
+    output: EMERALD_BLOCK
+    amount: 9
