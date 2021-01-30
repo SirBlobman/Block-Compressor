@@ -17,6 +17,7 @@ import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.Replacer;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
+import com.github.sirblobman.api.update.UpdateChecker;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.MessageUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
@@ -50,6 +51,9 @@ public final class BlockCompressorPlugin extends JavaPlugin {
 
         PluginManager pluginManager = Bukkit.getPluginManager();
         pluginManager.registerEvents(new ListenerCompressorTool(this), this);
+
+        UpdateChecker updateChecker = new UpdateChecker(this, 88448L);
+        updateChecker.runCheck();
     }
 
     @Override
