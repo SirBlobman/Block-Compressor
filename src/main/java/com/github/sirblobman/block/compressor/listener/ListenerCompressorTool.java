@@ -16,13 +16,17 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.Validate;
+import com.github.sirblobman.api.utility.VersionUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
+import com.github.sirblobman.api.xseries.XSound;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 import com.github.sirblobman.block.compressor.object.CompressorRecipe;
@@ -35,7 +39,15 @@ public final class ListenerCompressorTool implements Listener {
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
     public void onInteract(PlayerInteractEvent e) {
-        ItemStack item = e.getItem();
+        int minorVersion = VersionUtility.getMinorVersion();
+        if(minorVersion > 8) {
+            EquipmentSlot hand = e.getHand();
+            if(hand != EquipmentSlot.HAND) return;
+        }
+
+
+        Player player = e.getPlayer();
+        ItemStack item = getItemInMainHand(player);
         if(!this.plugin.isCompressorTool(item)) return;
         e.setCancelled(true);
 
@@ -73,7 +85,18 @@ public final class ListenerCompressorTool implements Listener {
             }
         }
 
-        Player player = e.getPlayer();
+        if(success && this.plugin.hasDurability(item)) {
+            item = this.plugin.decreaseDurability(item);
+            int durability = this.plugin.getDurability(item);
+            if(durability <= 0) {
+                XSound.ENTITY_ITEM_BREAK.play(player, 1.0F, 1.0F);
+                setItemInMainHand(player, ItemUtility.getAir());
+            } else {
+                this.plugin.updateDurability(item);
+                setItemInMainHand(player, item);
+            }
+        }
+
         String messagePath = ("compress-" + (success ? "successful" : "failure"));
         this.plugin.sendMessage(player, messagePath);
     }
@@ -93,5 +116,24 @@ public final class ListenerCompressorTool implements Listener {
         }
 
         return amount;
+    }
+
+    @SuppressWarnings("deprecation")
+    private ItemStack getItemInMainHand(Player player) {
+        int minorVersion = VersionUtility.getMinorVersion();
+        PlayerInventory playerInventory = player.getInventory();
+        return (minorVersion < 9 ? playerInventory.getItemInHand() : playerInventory.getItemInMainHand());
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setItemInMainHand(Player player, ItemStack item) {
+        int minorVersion = VersionUtility.getMinorVersion();
+        PlayerInventory playerInventory = player.getInventory();
+        if(minorVersion < 9) {
+            playerInventory.setItemInHand(item);
+            return;
+        }
+
+        playerInventory.setItemInMainHand(item);
     }
 }

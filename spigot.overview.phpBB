@@ -15,6 +15,7 @@ Block Compressor is a configurable plugin used to compress ores into their respe
 [*]Compress nuggets into ingots.
 [*]Configurable compression recipes (input type, output type, amount)
 [*]Configurable compression tool item for chests.
+[*]Durability option for the compression tool.
 [*]Configurable config messages.
 [/LIST]
 

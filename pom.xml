@@ -11,7 +11,7 @@
     
     <properties>
         <java.version>1.8</java.version>
-        <spigot.version>1.8.8-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>1.9.4-R0.1-SNAPSHOT</spigot.version>
         
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
@@ -22,7 +22,7 @@
         <bukkit.plugin.description>${project.description}</bukkit.plugin.description>
         
         <bukkit.plugin.main>${project.groupId}.block.compressor.BlockCompressorPlugin</bukkit.plugin.main>
-        <bukkit.plugin.version>1.0.1</bukkit.plugin.version>
+        <bukkit.plugin.version>1.0.2</bukkit.plugin.version>
     </properties>
     
     <repositories>
