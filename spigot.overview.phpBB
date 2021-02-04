@@ -36,15 +36,28 @@ language:
   compress-failure: "&cThere were no items to compress."
   tool-give: "&aYou gave a block compressor tool to &7{target}&a."
   tool-get: "&aYou have received a block compressor tool."
+  durability-infinite: "Infinite"
+  durability-normal: "&7{current}/{max}"
 
 # Changing values here will not affect older compressor tools
 compressor-tool:
+  # The XMaterial name of the item
   material: GOLDEN_HOE
+
+  # How much durability does the tool have?
+  # Default: infinity
+  # Valid Values: 1-2000000000
+  durability: infinity
+
+  # What name should the tool have?
   display-name: "&fCompressor Tool"
+
+  # What lore should be displayed under the name of the tool?
   lore:
     - "&7Right click a block with an"
     - "&7inventory to compress the "
     - "&7contents."
+    - "&8&lDurability: &7{durability}"
 
 # You can add and remove your own custom recipes as well
 # Use XMaterial names, not Bukkit names
