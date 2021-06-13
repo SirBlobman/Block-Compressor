@@ -1,0 +1,10 @@
+language-name: "en_us"
+
+compress-successful: "&aSuccessfully compressed all items."
+compress-failure: "&cThere were no items to compress."
+
+tool-give: "&aYou gave a block compressor tool to &7{target}&a."
+tool-get: "&aYou have received a block compressor tool."
+
+reload-success: "&aSuccessfully reloaded the configuration and language files."
+invalid-configuration: "&cThe compressor tool item is mis-configured."

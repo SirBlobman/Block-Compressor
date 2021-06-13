@@ -18,6 +18,7 @@ import com.github.sirblobman.block.compressor.object.CompressorRecipe;
 public final class CompressorRecipeManager {
     private final BlockCompressorPlugin plugin;
     private final Set<CompressorRecipe> recipeSet;
+
     public CompressorRecipeManager(BlockCompressorPlugin plugin) {
         this.plugin = Validate.notNull(plugin, "plugin must not be null!");
         this.recipeSet = new HashSet<>();
@@ -65,6 +66,6 @@ public final class CompressorRecipeManager {
     }
 
     public Set<CompressorRecipe> getRecipes() {
-        return Collections.unmodifiableSet(recipeSet);
+        return Collections.unmodifiableSet(this.recipeSet);
     }
 }

@@ -14,17 +14,27 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.github.sirblobman.api.command.PlayerCommand;
+import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 import com.github.sirblobman.block.compressor.object.CompressorRecipe;
 
+import org.jetbrains.annotations.NotNull;
+
 public final class CommandCompress extends PlayerCommand {
     private final BlockCompressorPlugin plugin;
+
     public CommandCompress(BlockCompressorPlugin plugin) {
         super(plugin, "compress");
         this.plugin = plugin;
+    }
+
+    @NotNull
+    @Override
+    protected LanguageManager getLanguageManager() {
+        return this.plugin.getLanguageManager();
     }
 
     @Override
@@ -58,8 +68,9 @@ public final class CommandCompress extends PlayerCommand {
             }
         }
 
+        LanguageManager languageManager = getLanguageManager();
         String messagePath = ("compress-" + (success ? "successful" : "failure"));
-        this.plugin.sendMessage(player, messagePath);
+        languageManager.sendMessage(player, messagePath, null, true);
 
         player.updateInventory();
         return true;

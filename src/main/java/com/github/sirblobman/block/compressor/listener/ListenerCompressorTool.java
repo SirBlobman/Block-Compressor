@@ -13,7 +13,6 @@ import org.bukkit.block.DoubleChest;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -22,8 +21,9 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
+import com.github.sirblobman.api.core.listener.PluginListener;
+import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.utility.ItemUtility;
-import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.api.utility.VersionUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.api.xseries.XSound;
@@ -31,10 +31,9 @@ import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 import com.github.sirblobman.block.compressor.object.CompressorRecipe;
 
-public final class ListenerCompressorTool implements Listener {
-    private final BlockCompressorPlugin plugin;
+public final class ListenerCompressorTool extends PluginListener<BlockCompressorPlugin> {
     public ListenerCompressorTool(BlockCompressorPlugin plugin) {
-        this.plugin = Validate.notNull(plugin, "plugin must not be null!");
+        super(plugin);
     }
 
     @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
@@ -45,10 +44,11 @@ public final class ListenerCompressorTool implements Listener {
             if(hand != EquipmentSlot.HAND) return;
         }
 
-
         Player player = e.getPlayer();
         ItemStack item = getItemInMainHand(player);
-        if(!this.plugin.isCompressorTool(item)) return;
+
+        BlockCompressorPlugin plugin = getPlugin();
+        if(!plugin.isCompressorTool(item)) return;
         e.setCancelled(true);
 
         Action action = e.getAction();
@@ -65,7 +65,7 @@ public final class ListenerCompressorTool implements Listener {
         InventoryHolder inventoryHolder = (InventoryHolder) state;
         Inventory inventory = inventoryHolder.getInventory();
 
-        CompressorRecipeManager compressorRecipeManager = this.plugin.getCompressorRecipeManager();
+        CompressorRecipeManager compressorRecipeManager = plugin.getCompressorRecipeManager();
         Set<CompressorRecipe> recipeSet = compressorRecipeManager.getRecipes();
 
         boolean success = false;
@@ -85,20 +85,21 @@ public final class ListenerCompressorTool implements Listener {
             }
         }
 
-        if(success && this.plugin.hasDurability(item)) {
-            item = this.plugin.decreaseDurability(item);
-            int durability = this.plugin.getDurability(item);
+        if(success && plugin.hasDurability(item)) {
+            item = plugin.decreaseDurability(item);
+            int durability = plugin.getDurability(item);
             if(durability <= 0) {
                 XSound.ENTITY_ITEM_BREAK.play(player, 1.0F, 1.0F);
                 setItemInMainHand(player, ItemUtility.getAir());
             } else {
-                this.plugin.updateDurability(item);
+                plugin.updateDurability(item);
                 setItemInMainHand(player, item);
             }
         }
 
+        LanguageManager languageManager = plugin.getLanguageManager();
         String messagePath = ("compress-" + (success ? "successful" : "failure"));
-        this.plugin.sendMessage(player, messagePath);
+        languageManager.sendMessage(player, messagePath, null, true);
     }
 
     private int removeAndCount(XMaterial material, Inventory inventory) {

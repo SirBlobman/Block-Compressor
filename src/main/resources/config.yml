@@ -1,11 +1,5 @@
-# Should the plugin be allowed to check for updates?
-update-checker: true
-
-language:
-  compress-successful: "&aSuccessfully compressed all items."
-  compress-failure: "&cThere were no items to compress."
-  tool-give: "&aYou gave a block compressor tool to &7{target}&a."
-  tool-get: "&aYou have received a block compressor tool."
+# These are customizable formats for lore placeholders
+lore-format:
   durability-infinite: "Infinite"
   durability-normal: "&7{current}/{max}"
 
@@ -37,17 +31,12 @@ recipes:
     output: COAL_BLOCK
     amount: 9
 
-  iron_nugget:
-    input: IRON_NUGGET
-    output: IRON_INGOT
-    amount: 9
-
-  iron:
+  iron_ingot:
     input: IRON_INGOT
     output: IRON_BLOCK
     amount: 9
 
-  lapis:
+  lapis_lazuli:
     input: LAPIS_LAZULI
     output: LAPIS_BLOCK
     amount: 9
@@ -57,7 +46,7 @@ recipes:
     output: GOLD_INGOT
     amount: 9
 
-  gold:
+  gold_ingot:
     input: GOLD_INGOT
     output: GOLD_BLOCK
     amount: 9
@@ -80,4 +69,31 @@ recipes:
   emerald:
     input: EMERALD
     output: EMERALD_BLOCK
+    amount: 9
+
+  # Iron Nugget was added in Minecraft 1.11
+  iron_nugget:
+    input: IRON_NUGGET
+    output: IRON_INGOT
+    amount: 9
+
+  # Raw Copper, Raw Iron, Raw Gold, and Copper were added in Minecraft 1.17
+  raw_copper:
+    input: RAW_COPPER
+    output: RAW_COPPER_BLOCK
+    amount: 9
+
+  raw_iron:
+    input: RAW_IRON
+    output: RAW_IRON_BLOCK
+    amount: 9
+
+  raw_gold:
+    input: RAW_GOLD
+    output: RAW_GOLD_BLOCK
+    amount: 9
+
+  copper_ingot:
+    input: COPPER_INGOT
+    output: COPPER_BLOCK
     amount: 9

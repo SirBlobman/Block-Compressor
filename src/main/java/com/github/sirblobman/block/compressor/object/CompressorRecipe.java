@@ -13,6 +13,7 @@ import com.github.sirblobman.api.xseries.XMaterial;
 public final class CompressorRecipe {
     private final XMaterial input, output;
     private final int amount;
+
     public CompressorRecipe(XMaterial input, XMaterial output, int amount) {
         this.input = Validate.notNull(input, "input must not be null!");
         this.output = Validate.notNull(output, "output must not be null!");

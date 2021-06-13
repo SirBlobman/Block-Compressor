@@ -4,25 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.sirblobman.api.configuration.ConfigurationManager;
-import com.github.sirblobman.api.core.plugin.ConfigurablePlugin;
+import com.github.sirblobman.api.core.CorePlugin;
 import com.github.sirblobman.api.item.ItemBuilder;
-import com.github.sirblobman.api.language.Replacer;
+import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
-import com.github.sirblobman.api.update.UpdateChecker;
+import com.github.sirblobman.api.plugin.ConfigurablePlugin;
+import com.github.sirblobman.api.update.UpdateManager;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.MessageUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
+import com.github.sirblobman.block.compressor.command.CommandBlockCompressor;
 import com.github.sirblobman.block.compressor.command.CommandCompress;
 import com.github.sirblobman.block.compressor.command.CommandCompressTool;
 import com.github.sirblobman.block.compressor.listener.ListenerCompressorTool;
@@ -30,6 +30,7 @@ import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 
 public final class BlockCompressorPlugin extends ConfigurablePlugin {
     private final CompressorRecipeManager compressorRecipeManager;
+
     public BlockCompressorPlugin() {
         this.compressorRecipeManager = new CompressorRecipeManager(this);
     }
@@ -38,6 +39,10 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     public void onLoad() {
         ConfigurationManager configurationManager = getConfigurationManager();
         configurationManager.saveDefault("config.yml");
+
+        LanguageManager languageManager = getLanguageManager();
+        languageManager.saveDefaultLanguages();
+        languageManager.reloadLanguages();
     }
 
     @Override
@@ -45,14 +50,14 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         CompressorRecipeManager compressorRecipeManager = getCompressorRecipeManager();
         compressorRecipeManager.reloadRecipes();
 
+        new CommandBlockCompressor(this).register();
         new CommandCompress(this).register();
         new CommandCompressTool(this).register();
+        new ListenerCompressorTool(this).register();
 
-        PluginManager pluginManager = Bukkit.getPluginManager();
-        pluginManager.registerEvents(new ListenerCompressorTool(this), this);
-
-        UpdateChecker updateChecker = new UpdateChecker(this, 88448L);
-        updateChecker.runCheck();
+        CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
+        UpdateManager updateManager = corePlugin.getUpdateManager();
+        updateManager.addResource(this, 88448L);
     }
 
     @Override
@@ -120,13 +125,6 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         return (value != null && value.equals("yes"));
     }
 
-    public void sendMessage(CommandSender sender, String path, Replacer... replacers) {
-        String message = getMessage(path);
-        if(message == null || message.isEmpty()) return;
-        for(Replacer replacer : replacers) message = replacer.replace(message);
-        sender.sendMessage(message);
-    }
-
     public boolean hasDurability(ItemStack item) {
         if(ItemUtility.isAir(item)) return false;
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
@@ -178,11 +176,12 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         for(String line : loreList) {
             if(line.contains("{durability}")) {
                 String formatPath = (hasDurability ? "durability-normal" : "durability-infinite");
-                String format = getMessage(formatPath);
+                String format = configuration.getString("lore-format." + formatPath);
                 if(hasDurability) {
                     int durability = getDurability(item);
                     int maxDurability = getMaxDurability(item);
-                    format = format.replace("{current}", Integer.toString(durability)).replace("{max}", Integer.toString(maxDurability));
+                    format = format.replace("{current}", Integer.toString(durability))
+                            .replace("{max}", Integer.toString(maxDurability));
                 }
 
                 line = line.replace("{durability}", format);
@@ -195,22 +194,5 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(realLore);
         item.setItemMeta(meta);
-    }
-
-    private String getMessage(String path) {
-        String messagePath = ("language." + path);
-        YamlConfiguration configuration = getConfig();
-        if(configuration.isList(messagePath)) {
-            List<String> messageList = configuration.getStringList(messagePath);
-            List<String> coloredList = MessageUtility.colorList(messageList);
-            return String.join("\n", coloredList);
-        }
-
-        if(configuration.isString(messagePath)) {
-            String message = configuration.getString(messagePath);
-            if(message != null) return MessageUtility.color(message);
-        }
-
-        return String.format("{%s}", messagePath);
     }
 }

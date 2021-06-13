@@ -1,7 +1,7 @@
 name: "${bukkit.plugin.name}"
 prefix: "${bukkit.plugin.prefix}"
 description: "${bukkit.plugin.description}"
-website: "https://www.spigotmc.org/resources/88448/"
+website: "${project.url}"
 
 main: "${bukkit.plugin.main}"
 version: "${bukkit.plugin.version}"
@@ -14,6 +14,15 @@ depend:
   - "SirBlobmanCore"
 
 commands:
+  block-compressor:
+    description: "Main command for the Block Compressor plugin."
+    permission: "block.compressor.command.block-compressor"
+    usage: "/<command> reload"
+    aliases:
+      - "blockcompressor"
+      - "compressor"
+      - "bcompressor"
+
   compress:
     description: "Compress the items in your inventory into blocks."
     permission: "block.compressor.command.compress"
@@ -25,6 +34,10 @@ commands:
     usage: "/<command> [player]"
 
 permissions:
+  block.compressor.command.block-compressor:
+    description: "Access to the '/block-compressor' command."
+    default: op
+
   block.compressor.command.compress:
     description: "Access to the '/compress' command."
     default: true
