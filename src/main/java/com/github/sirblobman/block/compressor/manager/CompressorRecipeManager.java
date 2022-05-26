@@ -30,12 +30,16 @@ public final class CompressorRecipeManager {
 
         YamlConfiguration configuration = this.plugin.getConfig();
         ConfigurationSection sectionRecipes = configuration.getConfigurationSection("recipes");
-        if(sectionRecipes == null) return;
+        if(sectionRecipes == null) {
+            return;
+        }
 
         Set<String> keySet = sectionRecipes.getKeys(false);
         for(String key : keySet) {
             ConfigurationSection section = sectionRecipes.getConfigurationSection(key);
-            if(section == null) continue;
+            if(section == null) {
+                continue;
+            }
 
             String inputMaterialName = section.getString("input");
             String outputMaterialName = section.getString("output");

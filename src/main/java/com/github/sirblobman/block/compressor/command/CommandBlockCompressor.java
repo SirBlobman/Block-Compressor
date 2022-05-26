@@ -7,10 +7,8 @@ import java.util.Locale;
 import org.bukkit.command.CommandSender;
 
 import com.github.sirblobman.api.command.Command;
-import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
-import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -30,26 +28,26 @@ public final class CommandBlockCompressor extends Command {
 
     @Override
     protected List<String> onTabComplete(CommandSender sender, String[] args) {
-        return (args.length == 1 ? Collections.singletonList("reload") : Collections.emptyList());
+        if(args.length == 1) {
+            return Collections.singletonList("reload");
+        }
+        
+        return Collections.emptyList();
     }
 
     @Override
     protected boolean execute(CommandSender sender, String[] args) {
-        if(args.length < 1) return false;
+        if(args.length < 1) {
+            return false;
+        }
 
         String sub = args[0].toLowerCase(Locale.US);
-        if(!sub.equals("reload")) return false;
-
-        ConfigurationManager configurationManager = this.plugin.getConfigurationManager();
-        configurationManager.reload("config.yml");
-        configurationManager.reload("language.yml");
-
+        if(!sub.equals("reload")) {
+            return false;
+        }
+        
+        this.plugin.reloadConfig();
         LanguageManager languageManager = getLanguageManager();
-        languageManager.reloadLanguages();
-
-        CompressorRecipeManager compressorRecipeManager = this.plugin.getCompressorRecipeManager();
-        compressorRecipeManager.reloadRecipes();
-
         languageManager.sendMessage(sender, "reload-success", null, true);
         return true;
     }

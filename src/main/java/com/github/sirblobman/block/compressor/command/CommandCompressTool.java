@@ -34,7 +34,7 @@ public final class CommandCompressTool extends Command {
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         if(args.length == 1) {
             Set<String> valueSet = getOnlinePlayerNames();
-            return getMatching(valueSet, args[0]);
+            return getMatching(args[0], valueSet);
         }
 
         return Collections.emptyList();
@@ -42,13 +42,17 @@ public final class CommandCompressTool extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if(args.length == 0 && !(sender instanceof Player)) return false;
-        LanguageManager languageManager = getLanguageManager();
-
+        if(args.length == 0 && !(sender instanceof Player)) {
+            return false;
+        }
+        
         String targetName = (args.length > 0 ? args[0] : sender.getName());
         Player target = findTarget(sender, targetName);
-        if(target == null) return true;
-
+        if(target == null) {
+            return true;
+        }
+    
+        LanguageManager languageManager = getLanguageManager();
         ItemStack compressorTool = this.plugin.getCompressorTool();
         if(ItemUtility.isAir(compressorTool)) {
             languageManager.sendMessage(sender, "invalid-configuration", null, true);

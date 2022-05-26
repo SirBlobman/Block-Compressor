@@ -55,7 +55,9 @@ public final class CommandCompress extends PlayerCommand {
         for(CompressorRecipe recipe : recipeSet) {
             XMaterial input = recipe.getInput();
             int removeCount = removeAndCount(input, inventory);
-            if(removeCount <= 0) continue;
+            if(removeCount <= 0) {
+                continue;
+            }
 
             ItemStack[] convert = recipe.convert(removeCount);
             if(!success) success = (removeCount >= recipe.getAmount());
@@ -63,7 +65,10 @@ public final class CommandCompress extends PlayerCommand {
             Map<Integer, ItemStack> leftover = inventory.addItem(convert);
             Collection<ItemStack> dropCollection = leftover.values();
             for(ItemStack drop : dropCollection) {
-                if(ItemUtility.isAir(drop)) continue;
+                if(ItemUtility.isAir(drop)) {
+                    continue;
+                }
+                
                 world.dropItem(dropLocation, drop);
             }
         }
@@ -83,8 +88,13 @@ public final class CommandCompress extends PlayerCommand {
 
         for(int slot = 0; slot < inventorySize; slot++) {
             ItemStack item = inventory.getItem(slot);
-            if(ItemUtility.isAir(item)) continue;
-            if(!material.isSimilar(item)) continue;
+            if(ItemUtility.isAir(item)) {
+                continue;
+            }
+            
+            if(!material.isSimilar(item)) {
+                continue;
+            }
 
             amount += item.getAmount();
             inventory.setItem(slot, air);

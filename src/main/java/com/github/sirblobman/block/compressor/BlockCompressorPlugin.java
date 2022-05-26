@@ -42,29 +42,32 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
 
         LanguageManager languageManager = getLanguageManager();
         languageManager.saveDefaultLanguages();
-        languageManager.reloadLanguages();
     }
 
     @Override
     public void onEnable() {
-        CompressorRecipeManager compressorRecipeManager = getCompressorRecipeManager();
-        compressorRecipeManager.reloadRecipes();
-
-        new CommandBlockCompressor(this).register();
-        new CommandCompress(this).register();
-        new CommandCompressTool(this).register();
-        new ListenerCompressorTool(this).register();
-
-        CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
-        UpdateManager updateManager = corePlugin.getUpdateManager();
-        updateManager.addResource(this, 88448L);
+        reloadConfiguration();
+        registerCommands();
+        registerListeners();
+        setupUpdater();
     }
 
     @Override
     public void onDisable() {
         // Do Nothing
     }
-
+    
+    @Override
+    protected void reloadConfiguration() {
+        super.reloadConfiguration();
+        
+        LanguageManager languageManager = getLanguageManager();
+        languageManager.reloadLanguages();
+    
+        CompressorRecipeManager compressorRecipeManager = getCompressorRecipeManager();
+        compressorRecipeManager.reloadRecipes();
+    }
+    
     public CompressorRecipeManager getCompressorRecipeManager() {
         return this.compressorRecipeManager;
     }
@@ -72,11 +75,11 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     public ItemStack getCompressorTool() {
         YamlConfiguration configuration = getConfig();
         ConfigurationSection section = configuration.getConfigurationSection("compressor-tool");
-        if(section == null) return null;
+        if(section == null) {
+            return null;
+        }
 
-        String materialName = section.getString("material");
-        if(materialName == null) materialName = "DIAMOND_HOE";
-
+        String materialName = section.getString("material", "DIAMOND_HOE");
         Optional<XMaterial> optionalMaterial = XMaterial.matchXMaterial(materialName);
         XMaterial material = optionalMaterial.orElse(XMaterial.DIAMOND_HOE);
         ItemBuilder builder = new ItemBuilder(material).withAmount(1).withFlags(ItemFlag.values());
@@ -116,7 +119,9 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     }
 
     public boolean isCompressorTool(ItemStack item) {
-        if(ItemUtility.isAir(item)) return false;
+        if(ItemUtility.isAir(item)) {
+            return false;
+        }
 
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
@@ -126,7 +131,10 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     }
 
     public boolean hasDurability(ItemStack item) {
-        if(ItemUtility.isAir(item)) return false;
+        if(ItemUtility.isAir(item)) {
+            return false;
+        }
+        
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
 
@@ -135,7 +143,10 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     }
 
     public int getDurability(ItemStack item) {
-        if(!hasDurability(item)) return -1;
+        if(!hasDurability(item)) {
+            return -1;
+        }
+        
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
 
@@ -144,20 +155,30 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     }
 
     public int getMaxDurability(ItemStack item) {
-        if(!hasDurability(item)) return -1;
+        if(!hasDurability(item)) {
+            return -1;
+        }
+        
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
 
         String customNBT = itemHandler.getCustomNBT(item, "max-durability", "N/A");
-        if(customNBT.equals("infinity")) return -1;
+        if(customNBT.equals("infinity")) {
+            return -1;
+        }
+        
         return Integer.parseInt(customNBT);
     }
 
     public ItemStack decreaseDurability(ItemStack item) {
-        if(!hasDurability(item)) return item;
+        if(!hasDurability(item)) {
+            return item;
+        }
 
         int durability = getDurability(item);
-        if(durability <= 0) return item;
+        if(durability <= 0) {
+            return item;
+        }
 
         MultiVersionHandler multiVersionHandler = getMultiVersionHandler();
         ItemHandler itemHandler = multiVersionHandler.getItemHandler();
@@ -165,7 +186,10 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     }
 
     public void updateDurability(ItemStack item) {
-        if(ItemUtility.isAir(item)) return;
+        if(ItemUtility.isAir(item)) {
+            return;
+        }
+        
         YamlConfiguration configuration = getConfig();
         ConfigurationSection section = configuration.getConfigurationSection("compressor-tool");
 
@@ -194,5 +218,21 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         ItemMeta meta = item.getItemMeta();
         meta.setLore(realLore);
         item.setItemMeta(meta);
+    }
+    
+    private void registerCommands() {
+        new CommandBlockCompressor(this).register();
+        new CommandCompress(this).register();
+        new CommandCompressTool(this).register();
+    }
+    
+    private void registerListeners() {
+        new ListenerCompressorTool(this).register();
+    }
+    
+    private void setupUpdater() {
+        CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
+        UpdateManager updateManager = corePlugin.getUpdateManager();
+        updateManager.addResource(this, 88448L);
     }
 }

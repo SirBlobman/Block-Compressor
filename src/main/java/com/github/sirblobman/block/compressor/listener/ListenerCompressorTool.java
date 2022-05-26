@@ -41,27 +41,38 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         int minorVersion = VersionUtility.getMinorVersion();
         if(minorVersion > 8) {
             EquipmentSlot hand = e.getHand();
-            if(hand != EquipmentSlot.HAND) return;
+            if(hand != EquipmentSlot.HAND) {
+                return;
+            }
         }
 
         Player player = e.getPlayer();
         ItemStack item = getItemInMainHand(player);
 
         BlockCompressorPlugin plugin = getPlugin();
-        if(!plugin.isCompressorTool(item)) return;
+        if(!plugin.isCompressorTool(item)) {
+            return;
+        }
+        
         e.setCancelled(true);
-
         Action action = e.getAction();
-        if(action != Action.RIGHT_CLICK_BLOCK) return;
+        if(action != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
 
         Block block = e.getClickedBlock();
-        if(block == null) return;
+        if(block == null) {
+            return;
+        }
 
         World world = block.getWorld();
         Location dropLocation = block.getLocation().add(0.0D, 1.0D, 0.0D);
 
         BlockState state = block.getState();
-        if(!(state instanceof Chest) && !(state instanceof DoubleChest)) return;
+        if(!(state instanceof Chest) && !(state instanceof DoubleChest)) {
+            return;
+        }
+        
         InventoryHolder inventoryHolder = (InventoryHolder) state;
         Inventory inventory = inventoryHolder.getInventory();
 
@@ -72,7 +83,9 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         for(CompressorRecipe recipe : recipeSet) {
             XMaterial input = recipe.getInput();
             int removeCount = removeAndCount(input, inventory);
-            if(removeCount <= 0) continue;
+            if(removeCount <= 0) {
+                continue;
+            }
 
             ItemStack[] convert = recipe.convert(removeCount);
             if(!success) success = (removeCount >= recipe.getAmount());
@@ -80,7 +93,10 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
             Map<Integer, ItemStack> leftover = inventory.addItem(convert);
             Collection<ItemStack> dropCollection = leftover.values();
             for(ItemStack drop : dropCollection) {
-                if(ItemUtility.isAir(drop)) continue;
+                if(ItemUtility.isAir(drop)) {
+                    continue;
+                }
+                
                 world.dropItem(dropLocation, drop);
             }
         }
@@ -109,8 +125,9 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
 
         for(int slot = 0; slot < inventorySize; slot++) {
             ItemStack item = inventory.getItem(slot);
-            if(ItemUtility.isAir(item)) continue;
-            if(!material.isSimilar(item)) continue;
+            if(ItemUtility.isAir(item) || !material.isSimilar(item)) {
+                continue;
+            }
 
             amount += item.getAmount();
             inventory.setItem(slot, air);
