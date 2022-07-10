@@ -41,7 +41,7 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         configurationManager.saveDefault("config.yml");
 
         LanguageManager languageManager = getLanguageManager();
-        languageManager.saveDefaultLanguages();
+        languageManager.saveDefaultLanguageFiles();
     }
 
     @Override
@@ -59,10 +59,11 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     
     @Override
     protected void reloadConfiguration() {
-        super.reloadConfiguration();
+        ConfigurationManager configurationManager = getConfigurationManager();
+        configurationManager.reload("config.yml");
         
         LanguageManager languageManager = getLanguageManager();
-        languageManager.reloadLanguages();
+        languageManager.reloadLanguageFiles();
     
         CompressorRecipeManager compressorRecipeManager = getCompressorRecipeManager();
         compressorRecipeManager.reloadRecipes();

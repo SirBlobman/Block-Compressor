@@ -21,8 +21,8 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import com.github.sirblobman.api.core.listener.PluginListener;
 import com.github.sirblobman.api.language.LanguageManager;
+import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.VersionUtility;
 import com.github.sirblobman.api.xseries.XMaterial;
