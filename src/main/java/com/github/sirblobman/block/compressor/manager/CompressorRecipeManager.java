@@ -30,14 +30,14 @@ public final class CompressorRecipeManager {
 
         YamlConfiguration configuration = this.plugin.getConfig();
         ConfigurationSection sectionRecipes = configuration.getConfigurationSection("recipes");
-        if(sectionRecipes == null) {
+        if (sectionRecipes == null) {
             return;
         }
 
         Set<String> keySet = sectionRecipes.getKeys(false);
-        for(String key : keySet) {
+        for (String key : keySet) {
             ConfigurationSection section = sectionRecipes.getConfigurationSection(key);
-            if(section == null) {
+            if (section == null) {
                 continue;
             }
 
@@ -45,21 +45,21 @@ public final class CompressorRecipeManager {
             String outputMaterialName = section.getString("output");
             int amount = section.getInt("amount");
 
-            if(amount < 1) {
+            if (amount < 1) {
                 logger.warning("Invalid Compressor Recipe '" + key + "': amount must be greater than 0");
                 continue;
             }
 
             Optional<XMaterial> optionalInputMaterial = XMaterial.matchXMaterial(inputMaterialName);
             XMaterial inputMaterial = optionalInputMaterial.orElse(XMaterial.AIR);
-            if(ItemUtility.isAir(inputMaterial.parseItem())) {
+            if (ItemUtility.isAir(inputMaterial.parseItem())) {
                 logger.warning("Invalid Compressor Recipe '" + key + "': input is not a valid XMaterial value!");
                 continue;
             }
 
             Optional<XMaterial> optionalOutputMaterial = XMaterial.matchXMaterial(outputMaterialName);
             XMaterial outputMaterial = optionalOutputMaterial.orElse(XMaterial.AIR);
-            if(ItemUtility.isAir(outputMaterial.parseItem())) {
+            if (ItemUtility.isAir(outputMaterial.parseItem())) {
                 logger.warning("Invalid Compressor Recipe '" + key + "': output is not a valid XMaterial value!");
                 continue;
             }

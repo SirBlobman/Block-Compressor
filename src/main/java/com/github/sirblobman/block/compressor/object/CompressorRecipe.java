@@ -22,10 +22,10 @@ public final class CompressorRecipe {
 
     @Override
     public boolean equals(Object object) {
-        if(!(object instanceof CompressorRecipe)) {
+        if (!(object instanceof CompressorRecipe)) {
             return false;
         }
-        
+
         CompressorRecipe other = (CompressorRecipe) object;
         return (this.input == other.input && this.output == other.output && this.amount == other.amount);
     }
@@ -63,12 +63,12 @@ public final class CompressorRecipe {
         XMaterial output = getOutput();
         List<ItemStack> itemList = new ArrayList<>();
 
-        while(blockAmount > 0) {
+        while (blockAmount > 0) {
             int currentAmount = Math.min(blockAmount, 64);
             blockAmount -= currentAmount;
 
             ItemStack item = output.parseItem();
-            if(ItemUtility.isAir(item)) {
+            if (ItemUtility.isAir(item)) {
                 continue;
             }
 
@@ -76,12 +76,12 @@ public final class CompressorRecipe {
             itemList.add(item);
         }
 
-        while(oreLeftAmount > 0) {
+        while (oreLeftAmount > 0) {
             int currentAmount = Math.min(oreLeftAmount, 64);
             oreLeftAmount -= currentAmount;
 
             ItemStack item = input.parseItem();
-            if(item == null) {
+            if (item == null) {
                 continue;
             }
 

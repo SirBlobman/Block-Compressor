@@ -9,12 +9,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.sirblobman.api.command.Command;
-import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.language.Replacer;
+import com.github.sirblobman.api.language.SimpleReplacer;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
-
-import org.jetbrains.annotations.NotNull;
+import com.github.sirblobman.block.compressor.manager.ToolManager;
 
 public final class CommandCompressTool extends Command {
     private final BlockCompressorPlugin plugin;
@@ -24,15 +23,9 @@ public final class CommandCompressTool extends Command {
         this.plugin = plugin;
     }
 
-    @NotNull
-    @Override
-    protected LanguageManager getLanguageManager() {
-        return this.plugin.getLanguageManager();
-    }
-
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        if(args.length == 1) {
+        if (args.length == 1) {
             Set<String> valueSet = getOnlinePlayerNames();
             return getMatching(args[0], valueSet);
         }
@@ -42,29 +35,29 @@ public final class CommandCompressTool extends Command {
 
     @Override
     public boolean execute(CommandSender sender, String[] args) {
-        if(args.length == 0 && !(sender instanceof Player)) {
+        if (args.length == 0 && !(sender instanceof Player)) {
             return false;
         }
-        
+
         String targetName = (args.length > 0 ? args[0] : sender.getName());
         Player target = findTarget(sender, targetName);
-        if(target == null) {
+        if (target == null) {
             return true;
         }
-    
-        LanguageManager languageManager = getLanguageManager();
-        ItemStack compressorTool = this.plugin.getCompressorTool();
-        if(ItemUtility.isAir(compressorTool)) {
-            languageManager.sendMessage(sender, "invalid-configuration", null, true);
+
+        ToolManager toolManager = this.plugin.getToolManager();
+        ItemStack compressorTool = toolManager.createCompressorTool();
+        if (ItemUtility.isAir(compressorTool)) {
+            sendMessage(sender, "invalid-configuration", null, true);
             return true;
         }
 
         giveItems(target, compressorTool);
         String realTargetName = target.getName();
-        Replacer replacer = message -> message.replace("{target}", realTargetName);
 
-        languageManager.sendMessage(sender, "tool-give", replacer, true);
-        languageManager.sendMessage(target, "tool-get", null, true);
+        Replacer replacer = new SimpleReplacer("{target}", realTargetName);
+        sendMessage(sender, "tool-give", replacer, true);
+        sendMessage(target, "tool-get", null, true);
         return true;
     }
 }

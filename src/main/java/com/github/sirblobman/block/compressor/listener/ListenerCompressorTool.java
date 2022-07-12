@@ -29,6 +29,7 @@ import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.api.xseries.XSound;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
+import com.github.sirblobman.block.compressor.manager.ToolManager;
 import com.github.sirblobman.block.compressor.object.CompressorRecipe;
 
 public final class ListenerCompressorTool extends PluginListener<BlockCompressorPlugin> {
@@ -36,32 +37,47 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         super(plugin);
     }
 
-    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
+    private ToolManager getToolManager() {
+        BlockCompressorPlugin plugin = getPlugin();
+        return plugin.getToolManager();
+    }
+
+    private CompressorRecipeManager getRecipeManager() {
+        BlockCompressorPlugin plugin = getPlugin();
+        return plugin.getCompressorRecipeManager();
+    }
+
+    private LanguageManager getLanguageManager() {
+        BlockCompressorPlugin plugin = getPlugin();
+        return plugin.getLanguageManager();
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent e) {
         int minorVersion = VersionUtility.getMinorVersion();
-        if(minorVersion > 8) {
+        if (minorVersion > 8) {
             EquipmentSlot hand = e.getHand();
-            if(hand != EquipmentSlot.HAND) {
+            if (hand != EquipmentSlot.HAND) {
                 return;
             }
         }
 
         Player player = e.getPlayer();
         ItemStack item = getItemInMainHand(player);
+        ToolManager toolManager = getToolManager();
 
-        BlockCompressorPlugin plugin = getPlugin();
-        if(!plugin.isCompressorTool(item)) {
+        if (!toolManager.isCompressorTool(item)) {
             return;
         }
-        
+
         e.setCancelled(true);
         Action action = e.getAction();
-        if(action != Action.RIGHT_CLICK_BLOCK) {
+        if (action != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
 
         Block block = e.getClickedBlock();
-        if(block == null) {
+        if (block == null) {
             return;
         }
 
@@ -69,51 +85,51 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         Location dropLocation = block.getLocation().add(0.0D, 1.0D, 0.0D);
 
         BlockState state = block.getState();
-        if(!(state instanceof Chest) && !(state instanceof DoubleChest)) {
+        if (!(state instanceof Chest) && !(state instanceof DoubleChest)) {
             return;
         }
-        
+
         InventoryHolder inventoryHolder = (InventoryHolder) state;
         Inventory inventory = inventoryHolder.getInventory();
 
-        CompressorRecipeManager compressorRecipeManager = plugin.getCompressorRecipeManager();
+        CompressorRecipeManager compressorRecipeManager = getRecipeManager();
         Set<CompressorRecipe> recipeSet = compressorRecipeManager.getRecipes();
 
         boolean success = false;
-        for(CompressorRecipe recipe : recipeSet) {
+        for (CompressorRecipe recipe : recipeSet) {
             XMaterial input = recipe.getInput();
             int removeCount = removeAndCount(input, inventory);
-            if(removeCount <= 0) {
+            if (removeCount <= 0) {
                 continue;
             }
 
             ItemStack[] convert = recipe.convert(removeCount);
-            if(!success) success = (removeCount >= recipe.getAmount());
+            if (!success) success = (removeCount >= recipe.getAmount());
 
             Map<Integer, ItemStack> leftover = inventory.addItem(convert);
             Collection<ItemStack> dropCollection = leftover.values();
-            for(ItemStack drop : dropCollection) {
-                if(ItemUtility.isAir(drop)) {
+            for (ItemStack drop : dropCollection) {
+                if (ItemUtility.isAir(drop)) {
                     continue;
                 }
-                
+
                 world.dropItem(dropLocation, drop);
             }
         }
 
-        if(success && plugin.hasDurability(item)) {
-            item = plugin.decreaseDurability(item);
-            int durability = plugin.getDurability(item);
-            if(durability <= 0) {
+        if (success && toolManager.hasDurability(item)) {
+            item = toolManager.decreaseDurability(item);
+            int durability = toolManager.getDurability(item);
+            if (durability <= 0) {
                 XSound.ENTITY_ITEM_BREAK.play(player, 1.0F, 1.0F);
                 setItemInMainHand(player, ItemUtility.getAir());
             } else {
-                plugin.updateDurability(item);
+                toolManager.updateDurability(item);
                 setItemInMainHand(player, item);
             }
         }
 
-        LanguageManager languageManager = plugin.getLanguageManager();
+        LanguageManager languageManager = getLanguageManager();
         String messagePath = ("compress-" + (success ? "successful" : "failure"));
         languageManager.sendMessage(player, messagePath, null, true);
     }
@@ -123,9 +139,9 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         int inventorySize = inventory.getSize();
         ItemStack air = ItemUtility.getAir();
 
-        for(int slot = 0; slot < inventorySize; slot++) {
+        for (int slot = 0; slot < inventorySize; slot++) {
             ItemStack item = inventory.getItem(slot);
-            if(ItemUtility.isAir(item) || !material.isSimilar(item)) {
+            if (ItemUtility.isAir(item) || !material.isSimilar(item)) {
                 continue;
             }
 
@@ -140,14 +156,18 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
     private ItemStack getItemInMainHand(Player player) {
         int minorVersion = VersionUtility.getMinorVersion();
         PlayerInventory playerInventory = player.getInventory();
-        return (minorVersion < 9 ? playerInventory.getItemInHand() : playerInventory.getItemInMainHand());
+        if(minorVersion < 9) {
+            return playerInventory.getItemInHand();
+        }
+
+        return playerInventory.getItemInMainHand();
     }
 
     @SuppressWarnings("deprecation")
     private void setItemInMainHand(Player player, ItemStack item) {
         int minorVersion = VersionUtility.getMinorVersion();
         PlayerInventory playerInventory = player.getInventory();
-        if(minorVersion < 9) {
+        if (minorVersion < 9) {
             playerInventory.setItemInHand(item);
             return;
         }
