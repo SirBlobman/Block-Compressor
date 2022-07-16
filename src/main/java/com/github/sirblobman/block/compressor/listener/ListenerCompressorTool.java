@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -85,7 +86,7 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         Location dropLocation = block.getLocation().add(0.0D, 1.0D, 0.0D);
 
         BlockState state = block.getState();
-        if (!(state instanceof Chest) && !(state instanceof DoubleChest)) {
+        if(!isAllowed(state)) {
             return;
         }
 
@@ -173,5 +174,16 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         }
 
         playerInventory.setItemInMainHand(item);
+    }
+
+    private boolean isAllowed(BlockState state) {
+        int minorVersion = VersionUtility.getMinorVersion();
+        if(minorVersion >= 11) {
+            if(state instanceof ShulkerBox) {
+                return true;
+            }
+        }
+
+        return (state instanceof Chest || state instanceof DoubleChest);
     }
 }
