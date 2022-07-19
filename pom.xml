@@ -25,7 +25,7 @@
         <bukkit.plugin.description>${project.description}</bukkit.plugin.description>
         
         <bukkit.plugin.main>${project.groupId}.block.compressor.BlockCompressorPlugin</bukkit.plugin.main>
-        <bukkit.plugin.version>1.1.4</bukkit.plugin.version>
+        <bukkit.plugin.version>1.1.5</bukkit.plugin.version>
     </properties>
     
     <repositories>

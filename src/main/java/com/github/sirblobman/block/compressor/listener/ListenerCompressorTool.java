@@ -1,16 +1,8 @@
 package com.github.sirblobman.block.compressor.listener;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
-import org.bukkit.block.Chest;
-import org.bukkit.block.DoubleChest;
-import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -26,12 +18,10 @@ import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.VersionUtility;
-import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.api.xseries.XSound;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 import com.github.sirblobman.block.compressor.manager.ToolManager;
-import com.github.sirblobman.block.compressor.object.CompressorRecipe;
 
 public final class ListenerCompressorTool extends PluginListener<BlockCompressorPlugin> {
     public ListenerCompressorTool(BlockCompressorPlugin plugin) {
@@ -82,42 +72,18 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
             return;
         }
 
-        World world = block.getWorld();
-        Location dropLocation = block.getLocation().add(0.0D, 1.0D, 0.0D);
-
         BlockState state = block.getState();
-        if(!isAllowed(state)) {
+        CompressorRecipeManager recipeManager = getRecipeManager();
+        if (!recipeManager.isAllowed(state)) {
             return;
         }
 
+        Location blockLocation = block.getLocation();
+        Location dropLocation = blockLocation.add(0.5D, 1.0D, 0.5D);
         InventoryHolder inventoryHolder = (InventoryHolder) state;
         Inventory inventory = inventoryHolder.getInventory();
 
-        CompressorRecipeManager compressorRecipeManager = getRecipeManager();
-        Set<CompressorRecipe> recipeSet = compressorRecipeManager.getRecipes();
-
-        boolean success = false;
-        for (CompressorRecipe recipe : recipeSet) {
-            XMaterial input = recipe.getInput();
-            int removeCount = removeAndCount(input, inventory);
-            if (removeCount <= 0) {
-                continue;
-            }
-
-            ItemStack[] convert = recipe.convert(removeCount);
-            if (!success) success = (removeCount >= recipe.getAmount());
-
-            Map<Integer, ItemStack> leftover = inventory.addItem(convert);
-            Collection<ItemStack> dropCollection = leftover.values();
-            for (ItemStack drop : dropCollection) {
-                if (ItemUtility.isAir(drop)) {
-                    continue;
-                }
-
-                world.dropItem(dropLocation, drop);
-            }
-        }
-
+        boolean success = recipeManager.compressRecursive(dropLocation, inventory);
         if (success && toolManager.hasDurability(item)) {
             item = toolManager.decreaseDurability(item);
             int durability = toolManager.getDurability(item);
@@ -135,29 +101,11 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         languageManager.sendMessage(player, messagePath, null, true);
     }
 
-    private int removeAndCount(XMaterial material, Inventory inventory) {
-        int amount = 0;
-        int inventorySize = inventory.getSize();
-        ItemStack air = ItemUtility.getAir();
-
-        for (int slot = 0; slot < inventorySize; slot++) {
-            ItemStack item = inventory.getItem(slot);
-            if (ItemUtility.isAir(item) || !material.isSimilar(item)) {
-                continue;
-            }
-
-            amount += item.getAmount();
-            inventory.setItem(slot, air);
-        }
-
-        return amount;
-    }
-
     @SuppressWarnings("deprecation")
     private ItemStack getItemInMainHand(Player player) {
         int minorVersion = VersionUtility.getMinorVersion();
         PlayerInventory playerInventory = player.getInventory();
-        if(minorVersion < 9) {
+        if (minorVersion < 9) {
             return playerInventory.getItemInHand();
         }
 
@@ -174,16 +122,5 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         }
 
         playerInventory.setItemInMainHand(item);
-    }
-
-    private boolean isAllowed(BlockState state) {
-        int minorVersion = VersionUtility.getMinorVersion();
-        if(minorVersion >= 11) {
-            if(state instanceof ShulkerBox) {
-                return true;
-            }
-        }
-
-        return (state instanceof Chest || state instanceof DoubleChest);
     }
 }

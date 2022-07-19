@@ -84,7 +84,12 @@ recipes:
     output: IRON_INGOT
     amount: 9
 
-  # Raw Copper, Raw Iron, Raw Gold, and Copper were added in Minecraft 1.17
+  # Amethyst, Raw Copper, Raw Iron, Raw Gold, and Copper were added in Minecraft 1.17
+  amethyst:
+    input: AMETHYST_SHARD
+    output: AMETHYST_BLOCK
+    amount: 4
+
   raw_copper:
     input: RAW_COPPER
     output: RAW_COPPER_BLOCK
