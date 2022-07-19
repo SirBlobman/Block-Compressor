@@ -17,6 +17,7 @@ import org.bukkit.block.ShulkerBox;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -126,16 +127,28 @@ public final class CompressorRecipeManager {
         boolean success = false;
 
         for (ItemStack item : inventory) {
+            if(item == null) {
+                continue;
+            }
+
             ItemMeta itemMeta = item.getItemMeta();
+            if(itemMeta == null) {
+                continue;
+            }
+
             if (itemMeta instanceof BlockStateMeta) {
                 BlockStateMeta stateMeta = (BlockStateMeta) itemMeta;
                 BlockState blockState = stateMeta.getBlockState();
-                if (isAllowed(blockState)) {
-                    boolean compress = compressRecursive(dropLocation, inventory);
+                if (isAllowed(blockState) && blockState instanceof InventoryHolder) {
+                    InventoryHolder holder = (InventoryHolder) blockState;
+                    Inventory itemInventory = holder.getInventory();
+
+                    boolean compress = compressRecursive(dropLocation, itemInventory);
                     if (!success && compress) {
                         success = true;
                     }
 
+                    stateMeta.setBlockState(blockState);
                     item.setItemMeta(stateMeta);
                 }
             }
