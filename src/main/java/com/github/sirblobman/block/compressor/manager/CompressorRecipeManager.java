@@ -38,9 +38,18 @@ public final class CompressorRecipeManager {
         this.recipeSet = new HashSet<>();
     }
 
+    public BlockCompressorPlugin getPlugin() {
+        return this.plugin;
+    }
+
+    public Set<CompressorRecipe> getRecipes() {
+        return Collections.unmodifiableSet(this.recipeSet);
+    }
+
     public void reloadRecipes() {
         this.recipeSet.clear();
-        Logger logger = this.plugin.getLogger();
+        BlockCompressorPlugin plugin = getPlugin();
+        Logger logger = plugin.getLogger();
 
         YamlConfiguration configuration = this.plugin.getConfig();
         ConfigurationSection sectionRecipes = configuration.getConfigurationSection("recipes");
@@ -83,11 +92,7 @@ public final class CompressorRecipeManager {
         }
     }
 
-    public Set<CompressorRecipe> getRecipes() {
-        return Collections.unmodifiableSet(this.recipeSet);
-    }
-
-    public boolean isAllowed(BlockState state) {
+    public boolean canCompressContents(BlockState state) {
         int minorVersion = VersionUtility.getMinorVersion();
         if (minorVersion >= 11) {
             if (state instanceof ShulkerBox) {
@@ -139,7 +144,7 @@ public final class CompressorRecipeManager {
             if (itemMeta instanceof BlockStateMeta) {
                 BlockStateMeta stateMeta = (BlockStateMeta) itemMeta;
                 BlockState blockState = stateMeta.getBlockState();
-                if (isAllowed(blockState) && blockState instanceof InventoryHolder) {
+                if (canCompressContents(blockState) && blockState instanceof InventoryHolder) {
                     InventoryHolder holder = (InventoryHolder) blockState;
                     Inventory itemInventory = holder.getInventory();
 

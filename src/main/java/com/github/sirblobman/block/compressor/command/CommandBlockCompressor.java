@@ -13,6 +13,7 @@ import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 public final class CommandBlockCompressor extends Command {
     public CommandBlockCompressor(BlockCompressorPlugin plugin) {
         super(plugin, "block-compressor");
+        setPermissionName("block.compressor.command.block-compressor");
     }
 
     @Override
@@ -38,7 +39,7 @@ public final class CommandBlockCompressor extends Command {
         JavaPlugin plugin = getPlugin();
         plugin.reloadConfig();
 
-        sendMessage(sender, "reload-success", null, true);
+        sendMessage(sender, "reload-success", null);
         return true;
     }
 }

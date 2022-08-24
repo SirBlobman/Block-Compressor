@@ -1,13 +1,3 @@
-# These are customizable formats for lore placeholders
-lore-format:
-  durability-infinite: "Infinite"
-  durability-normal: "&7{current}/{max}"
-
-# These are customizable formats for display name placeholders
-display-name-format:
-  durability-infinite: "Infinite"
-  durability-normal: "&7{current}"
-
 # Changing values here will not affect older compressor tools
 compressor-tool:
   # The XMaterial name of the item
@@ -17,18 +7,6 @@ compressor-tool:
   # Default: infinity
   # Valid Values: 1-2000000000
   durability: infinity
-
-  # What name should the tool have?
-  # Available Placeholders: {durability}
-  display-name: "&fCompressor Tool"
-
-  # What lore should be displayed under the name of the tool?
-  # Available Placeholders: {durability}
-  lore:
-    - "&7Right click a block with an"
-    - "&7inventory to compress the "
-    - "&7contents."
-    - "&8&lDurability: &7{durability}"
 
 # You can add and remove your own custom recipes as well
 # Use XMaterial names, not Bukkit names

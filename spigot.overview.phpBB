@@ -1,19 +1,19 @@
 [SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
-1.8.8, 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19
+1.8.8, 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2
 
 [SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
 Block Compressor is a configurable plugin used to compress ores into their respective blocks.
 
 [SIZE=5][B][COLOR=#FF0000]Dependencies:[/COLOR][/B][/SIZE]
 [LIST]
-[*][URL='https://www.spigotmc.org/resources/83189/']SirBlobmanCore[/URL]
+[*][URL='https://www.spigotmc.org/resources/83189/']BlueSlimeCore[/URL]
 [/LIST]
 
 [SIZE=5][COLOR=#FF0000][B]Features:[/B][/COLOR][/SIZE]
 [LIST]
 [*]Compress ores into blocks.
 [*]Compress nuggets into ingots.
-[*]Configurable compression recipes (input type, output type, amount)
+[*]Configurable compression recipes. (input type, output type, amount)
 [*]Configurable compression tool item for chests.
 [*]Durability option for the compression tool.
 [*]Configurable config messages.
@@ -28,16 +28,6 @@ Block Compressor is a configurable plugin used to compress ores into their respe
 [SIZE=5][COLOR=#FF0000][B]Configuration:[/B][/COLOR][/SIZE]
 [SPOILER='config.yml']
 [CODE=YAML]
-# These are customizable formats for lore placeholders
-lore-format:
-  durability-infinite: "Infinite"
-  durability-normal: "&7{current}/{max}"
-
-# These are customizable formats for display name placeholders
-display-name-format:
-  durability-infinite: "Infinite"
-  durability-normal: "&7{current}"
-
 # Changing values here will not affect older compressor tools
 compressor-tool:
   # The XMaterial name of the item
@@ -47,18 +37,6 @@ compressor-tool:
   # Default: infinity
   # Valid Values: 1-2000000000
   durability: infinity
-
-  # What name should the tool have?
-  # Available Placeholders: {durability}
-  display-name: "&fCompressor Tool"
-
-  # What lore should be displayed under the name of the tool?
-  # Available Placeholders: {durability}
-  lore:
-    - "&7Right click a block with an"
-    - "&7inventory to compress the "
-    - "&7contents."
-    - "&8&lDurability: &7{durability}"
 
 # You can add and remove your own custom recipes as well
 # Use XMaterial names, not Bukkit names
@@ -139,7 +117,6 @@ recipes:
     input: COPPER_INGOT
     output: COPPER_BLOCK
     amount: 9
-
 [/CODE]
 [/SPOILER]
 

@@ -10,8 +10,11 @@ import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.api.xseries.XMaterial;
 
+import org.jetbrains.annotations.NotNull;
+
 public final class CompressorRecipe {
-    private final XMaterial input, output;
+    private final XMaterial input;
+    private final XMaterial output;
     private final int amount;
 
     public CompressorRecipe(XMaterial input, XMaterial output, int amount) {
@@ -42,10 +45,12 @@ public final class CompressorRecipe {
         return String.format("%s x %s = %s", this.amount, inputName, outputName);
     }
 
+    @NotNull
     public XMaterial getInput() {
         return this.input;
     }
 
+    @NotNull
     public XMaterial getOutput() {
         return this.output;
     }
@@ -54,6 +59,7 @@ public final class CompressorRecipe {
         return this.amount;
     }
 
+    @NotNull
     public ItemStack[] convert(int inputAmount) {
         int amount = getAmount();
         int blockAmount = (inputAmount / amount);

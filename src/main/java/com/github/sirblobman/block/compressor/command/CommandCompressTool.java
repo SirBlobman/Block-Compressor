@@ -20,6 +20,7 @@ public final class CommandCompressTool extends Command {
 
     public CommandCompressTool(BlockCompressorPlugin plugin) {
         super(plugin, "compress-tool");
+        setPermissionName("block.compressor.command.compress-tool");
         this.plugin = plugin;
     }
 
@@ -46,9 +47,9 @@ public final class CommandCompressTool extends Command {
         }
 
         ToolManager toolManager = this.plugin.getToolManager();
-        ItemStack compressorTool = toolManager.createCompressorTool();
+        ItemStack compressorTool = toolManager.createCompressorTool(target);
         if (ItemUtility.isAir(compressorTool)) {
-            sendMessage(sender, "invalid-configuration", null, true);
+            sendMessage(sender, "invalid-configuration", null);
             return true;
         }
 
@@ -56,8 +57,8 @@ public final class CommandCompressTool extends Command {
         String realTargetName = target.getName();
 
         Replacer replacer = new SimpleReplacer("{target}", realTargetName);
-        sendMessage(sender, "tool-give", replacer, true);
-        sendMessage(target, "tool-get", null, true);
+        sendMessage(sender, "tool-give", replacer);
+        sendMessage(target, "tool-get", null);
         return true;
     }
 }

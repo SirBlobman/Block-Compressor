@@ -28,29 +28,10 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
         super(plugin);
     }
 
-    private ToolManager getToolManager() {
-        BlockCompressorPlugin plugin = getPlugin();
-        return plugin.getToolManager();
-    }
-
-    private CompressorRecipeManager getRecipeManager() {
-        BlockCompressorPlugin plugin = getPlugin();
-        return plugin.getCompressorRecipeManager();
-    }
-
-    private LanguageManager getLanguageManager() {
-        BlockCompressorPlugin plugin = getPlugin();
-        return plugin.getLanguageManager();
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent e) {
-        int minorVersion = VersionUtility.getMinorVersion();
-        if (minorVersion > 8) {
-            EquipmentSlot hand = e.getHand();
-            if (hand != EquipmentSlot.HAND) {
-                return;
-            }
+        if(isNotMainHand(e)) {
+            return;
         }
 
         Player player = e.getPlayer();
@@ -74,7 +55,7 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
 
         BlockState state = block.getState();
         CompressorRecipeManager recipeManager = getRecipeManager();
-        if (!recipeManager.isAllowed(state)) {
+        if (!recipeManager.canCompressContents(state)) {
             return;
         }
 
@@ -91,14 +72,39 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
                 XSound.ENTITY_ITEM_BREAK.play(player, 1.0F, 1.0F);
                 setItemInMainHand(player, ItemUtility.getAir());
             } else {
-                toolManager.updateDurability(item);
+                item = toolManager.updateDurability(player, item);
                 setItemInMainHand(player, item);
             }
         }
 
         LanguageManager languageManager = getLanguageManager();
         String messagePath = ("compress-" + (success ? "successful" : "failure"));
-        languageManager.sendMessage(player, messagePath, null, true);
+        languageManager.sendMessage(player, messagePath, null);
+    }
+
+    private ToolManager getToolManager() {
+        BlockCompressorPlugin plugin = getPlugin();
+        return plugin.getToolManager();
+    }
+
+    private CompressorRecipeManager getRecipeManager() {
+        BlockCompressorPlugin plugin = getPlugin();
+        return plugin.getCompressorRecipeManager();
+    }
+
+    private LanguageManager getLanguageManager() {
+        BlockCompressorPlugin plugin = getPlugin();
+        return plugin.getLanguageManager();
+    }
+
+    private boolean isNotMainHand(PlayerInteractEvent e) {
+        int minorVersion = VersionUtility.getMinorVersion();
+        if(minorVersion < 9) {
+            return false;
+        }
+
+        EquipmentSlot hand = e.getHand();
+        return (hand != EquipmentSlot.HAND);
     }
 
     @SuppressWarnings("deprecation")

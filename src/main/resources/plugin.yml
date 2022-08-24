@@ -11,12 +11,11 @@ authors:
   - "SirBlobman"
 
 depend:
-  - "SirBlobmanCore"
+  - "BlueSlimeCore"
 
 commands:
   block-compressor:
     description: "Main command for the Block Compressor plugin."
-    permission: "block.compressor.command.block-compressor"
     usage: "/<command> reload"
     aliases:
       - "blockcompressor"
@@ -25,12 +24,10 @@ commands:
 
   compress:
     description: "Compress the items in your inventory into blocks."
-    permission: "block.compressor.command.compress"
     usage: "/<command>"
 
   compress-tool:
     description: "Give yourself or another player a tool to compress non-player inventories."
-    permission: "block.compressor.command.compress-tool"
     usage: "/<command> [player]"
 
 permissions:

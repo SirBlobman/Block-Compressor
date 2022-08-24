@@ -1,10 +1,43 @@
+## Extra Information:
+## This is the default language file for Block Compressor.
+## The default language is "en_us", also known as English (United States).
+## Context will be added as YAML comments above the string.
+
+## The color scheme for messages is green and red.
+## Command feedback that is successful should always be green.
+## Error messages should always be red.
+## Variables in messages can be gray or white.
+
+## Messages use the MiniMessage format in non-strict mode.
+## More information about MiniMessage can be found here:
+## https://docs.adventure.kyori.net/minimessage/format.html
+
+---
 language-name: "en_us"
+decimal-format: "0.00"
 
-compress-successful: "&aSuccessfully compressed all items."
-compress-failure: "&cThere were no items to compress."
+error:
+  no-permission: "<red>Missing Permission: <gray>{permission}</gray>.</red>"
 
-tool-give: "&aYou gave a block compressor tool to &7{target}&a."
-tool-get: "&aYou have received a block compressor tool."
+compress-successful: "<green>Successfully compressed all items.</green>"
+compress-failure: "<red>There were no items to compress.</red>"
 
-reload-success: "&aSuccessfully reloaded the configuration and language files."
-invalid-configuration: "&cThe compressor tool item is mis-configured."
+tool-give: "<green>You gave a block compressor tool to <gray>{target}</gray>.</green>"
+tool-get: "<green>You have received a block compressor tool.</green>"
+
+reload-success: "<green>Successfully reloaded the configuration and language files.</green>"
+invalid-configuration: "<red>The compressor tool item is mis-configured.</red>"
+
+compressor-tool:
+  display-name:
+    format: "<white>Compressor Tool</white>"
+    durability-normal: "<gray>{current}</gray>"
+    durability-infinite: "Infinite"
+  lore:
+    format:
+      - "<gray>Right click a block with an</gray>"
+      - "<gray>inventory to compress the</gray>"
+      - "<gray>contents.</gray>"
+      - "<dark_gray><bold>Durability:</bold></dark_gray> <gray>{durability}</gray>"
+    durability-normal: "<gray>{current} <bold>/</bold> {max}</gray>"
+    durability-infinite: "Infinite"
