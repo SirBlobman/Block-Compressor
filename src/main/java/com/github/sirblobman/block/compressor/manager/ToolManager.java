@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.github.sirblobman.api.adventure.adventure.text.Component;
 import com.github.sirblobman.api.adventure.adventure.text.minimessage.MiniMessage;
 import com.github.sirblobman.api.item.ItemBuilder;
+import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.language.Replacer;
 import com.github.sirblobman.api.language.SimpleReplacer;
@@ -198,7 +199,9 @@ public final class ToolManager {
         String fullPath = "compressor-tool.display-name.format";
         Replacer durabilityReplacer = new SimpleReplacer("{durability}", durabilityFormat);
         String displayNameString = languageManager.getMessageString(player, fullPath, durabilityReplacer);
-        return miniMessage.deserialize(displayNameString);
+
+        Component displayName = miniMessage.deserialize(displayNameString);
+        return ComponentHelper.wrapNoItalics(displayName);
     }
 
     private List<Component> getLore(Player player, ItemStack item) {
@@ -228,7 +231,8 @@ public final class ToolManager {
         List<Component> lore = new ArrayList<>();
         for (String lineString : loreSplit) {
             Component line = miniMessage.deserialize(lineString);
-            lore.add(line);
+            Component noItalics = ComponentHelper.wrapNoItalics(line);
+            lore.add(noItalics);
         }
 
         return lore;
