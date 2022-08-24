@@ -19,6 +19,8 @@ import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.language.Replacer;
 import com.github.sirblobman.api.language.SimpleReplacer;
+import com.github.sirblobman.api.nbt.CustomNbtContainer;
+import com.github.sirblobman.api.nbt.CustomNbtTypes;
 import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.utility.ItemUtility;
@@ -85,16 +87,19 @@ public final class ToolManager {
 
         ItemStack item = builder.build();
         ItemHandler itemHandler = getItemHandler();
-        item = itemHandler.setCustomNBT(item, "compressor-tool", "yes");
+
+        CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
+        customNbt.set("compressor-tool", CustomNbtTypes.BOOLEAN, true);
 
         int durability = section.getInt("durability", -1);
         if (durability < 1 || durability > 2_000_000_000) {
-            item = itemHandler.setCustomNBT(item, "max-durability", "infinite");
+            customNbt.set("max-durability", CustomNbtTypes.STRING, "infinite");
         } else {
-            item = itemHandler.setCustomNBT(item, "durability", Integer.toString(durability));
-            item = itemHandler.setCustomNBT(item, "max-durability", Integer.toString(durability));
+            customNbt.set("durability", CustomNbtTypes.INTEGER, durability);
+            customNbt.set("max-durability", CustomNbtTypes.INTEGER, durability);
         }
 
+        item = itemHandler.setCustomNbt(item, customNbt);
         item = updateDurability(player, item);
         return item;
     }
@@ -105,8 +110,8 @@ public final class ToolManager {
         }
 
         ItemHandler itemHandler = getItemHandler();
-        String value = itemHandler.getCustomNBT(item, "compressor-tool", "no");
-        return (value != null && value.equals("yes"));
+        CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
+        return customNbt.getOrDefault("compressor-tool", CustomNbtTypes.BOOLEAN, false);
     }
 
     public boolean hasDurability(ItemStack item) {
@@ -115,8 +120,8 @@ public final class ToolManager {
         }
 
         ItemHandler itemHandler = getItemHandler();
-        String customNBT = itemHandler.getCustomNBT(item, "durability", "N/A");
-        return (customNBT != null && !customNBT.isEmpty() && !customNBT.equals("N/A"));
+        CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
+        return customNbt.has("durability", CustomNbtTypes.INTEGER);
     }
 
     public int getDurability(ItemStack item) {
@@ -125,8 +130,8 @@ public final class ToolManager {
         }
 
         ItemHandler itemHandler = getItemHandler();
-        String customNBT = itemHandler.getCustomNBT(item, "durability", "N/A");
-        return Integer.parseInt(customNBT);
+        CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
+        return customNbt.getOrDefault("durability", CustomNbtTypes.INTEGER, -1);
     }
 
     public int getMaxDurability(ItemStack item) {
@@ -135,12 +140,8 @@ public final class ToolManager {
         }
 
         ItemHandler itemHandler = getItemHandler();
-        String customNBT = itemHandler.getCustomNBT(item, "max-durability", "N/A");
-        if (customNBT.equals("infinity")) {
-            return -1;
-        }
-
-        return Integer.parseInt(customNBT);
+        CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
+        return customNbt.getOrDefault("max-durability", CustomNbtTypes.INTEGER, -1);
     }
 
     public ItemStack decreaseDurability(ItemStack item) {
@@ -154,7 +155,9 @@ public final class ToolManager {
         }
 
         ItemHandler itemHandler = getItemHandler();
-        return itemHandler.setCustomNBT(item, "durability", Integer.toString(durability - 1));
+        CustomNbtContainer customNbt = itemHandler.getCustomNbt(item);
+        customNbt.set("durability", CustomNbtTypes.INTEGER, durability - 1);
+        return itemHandler.setCustomNbt(item, customNbt);
     }
 
     public ItemStack updateDurability(Player player, ItemStack item) {
