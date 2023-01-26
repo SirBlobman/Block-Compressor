@@ -8,6 +8,10 @@ compressor-tool:
   # Valid Values: 1-2000000000
   durability: infinity
 
+  ## Extra Data
+  # model: integer, custom model data, requires 1.14.4 or higher.
+  # glowing: boolean, add an enchant effect to the item.
+
 # You can add and remove your own custom recipes as well
 # Use XMaterial names, not Bukkit names
 recipes:

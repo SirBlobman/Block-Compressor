@@ -85,6 +85,10 @@ public final class ToolManager {
             builder.withModel(model);
         }
 
+        if (section.getBoolean("glowing", false)) {
+            builder.withGlowing();
+        }
+
         ItemStack item = builder.build();
         ItemHandler itemHandler = getItemHandler();
 
