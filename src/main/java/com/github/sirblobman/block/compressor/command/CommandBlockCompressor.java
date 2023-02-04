@@ -39,7 +39,7 @@ public final class CommandBlockCompressor extends Command {
         JavaPlugin plugin = getPlugin();
         plugin.reloadConfig();
 
-        sendMessage(sender, "reload-success", null);
+        sendMessage(sender, "reload-success");
         return true;
     }
 }

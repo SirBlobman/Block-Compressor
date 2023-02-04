@@ -79,7 +79,7 @@ public final class ListenerCompressorTool extends PluginListener<BlockCompressor
 
         LanguageManager languageManager = getLanguageManager();
         String messagePath = ("compress-" + (success ? "successful" : "failure"));
-        languageManager.sendMessage(player, messagePath, null);
+        languageManager.sendMessage(player, messagePath);
     }
 
     private ToolManager getToolManager() {

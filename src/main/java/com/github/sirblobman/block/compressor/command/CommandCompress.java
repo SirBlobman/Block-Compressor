@@ -33,7 +33,7 @@ public final class CommandCompress extends PlayerCommand {
 
         boolean success = compressorRecipeManager.compressRecursive(dropLocation, playerInventory);
         String messagePath = ("compress-" + (success ? "successful" : "failure"));
-        sendMessage(player, messagePath, null);
+        sendMessage(player, messagePath);
 
         player.updateInventory();
         return true;
