@@ -17,8 +17,9 @@ import com.github.sirblobman.api.adventure.adventure.text.minimessage.MiniMessag
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.language.LanguageManager;
-import com.github.sirblobman.api.language.Replacer;
-import com.github.sirblobman.api.language.SimpleReplacer;
+import com.github.sirblobman.api.language.replacer.IntegerReplacer;
+import com.github.sirblobman.api.language.replacer.Replacer;
+import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.api.nbt.CustomNbtContainer;
 import com.github.sirblobman.api.nbt.CustomNbtTypes;
 import com.github.sirblobman.api.nms.ItemHandler;
@@ -189,22 +190,23 @@ public final class ToolManager {
         MiniMessage miniMessage = languageManager.getMiniMessage();
 
         boolean hasDurability = hasDurability(item);
-        Replacer currentMaxReplacer = null;
+        String durabilityFormatPathPart = (hasDurability ? "durability-normal" : "durability-infinite");
+        String durabilityFormatPath = ("compressor-tool.display-name." + durabilityFormatPathPart);
+
+        String durabilityFormat;
         if(hasDurability) {
             int durability = getDurability(item);
             int maxDurability = getMaxDurability(item);
-            String durabilityString = Integer.toString(durability);
-            String maxDurabilityString = Integer.toString(maxDurability);
-            currentMaxReplacer = message -> message.replace("{current}", durabilityString)
-                    .replace("{max}", maxDurabilityString);
+            Replacer currentReplacer = new IntegerReplacer("{current}", durability);
+            Replacer maxReplacer = new IntegerReplacer("{max}", maxDurability);
+            durabilityFormat = languageManager.getMessageString(player, durabilityFormatPath,
+                    currentReplacer, maxReplacer);
+        } else {
+            durabilityFormat = languageManager.getMessageString(player, durabilityFormatPath);
         }
 
-        String durabilityFormatPathPart = (hasDurability ? "durability-normal" : "durability-infinite");
-        String durabilityFormatPath = ("compressor-tool.display-name." + durabilityFormatPathPart);
-        String durabilityFormat = languageManager.getMessageString(player, durabilityFormatPath, currentMaxReplacer);
-
         String fullPath = "compressor-tool.display-name.format";
-        Replacer durabilityReplacer = new SimpleReplacer("{durability}", durabilityFormat);
+        Replacer durabilityReplacer = new StringReplacer("{durability}", durabilityFormat);
         String displayNameString = languageManager.getMessageString(player, fullPath, durabilityReplacer);
 
         Component displayName = miniMessage.deserialize(displayNameString);
@@ -216,22 +218,23 @@ public final class ToolManager {
         MiniMessage miniMessage = languageManager.getMiniMessage();
 
         boolean hasDurability = hasDurability(item);
-        Replacer currentMaxReplacer = null;
+        String durabilityFormatPathPart = (hasDurability ? "durability-normal" : "durability-infinite");
+        String durabilityFormatPath = ("compressor-tool.lore." + durabilityFormatPathPart);
+
+        String durabilityFormat;
         if(hasDurability) {
             int durability = getDurability(item);
             int maxDurability = getMaxDurability(item);
-            String durabilityString = Integer.toString(durability);
-            String maxDurabilityString = Integer.toString(maxDurability);
-            currentMaxReplacer = message -> message.replace("{current}", durabilityString)
-                    .replace("{max}", maxDurabilityString);
+            Replacer currentReplacer = new IntegerReplacer("{current}", durability);
+            Replacer maxReplacer = new IntegerReplacer("{max}", maxDurability);
+            durabilityFormat = languageManager.getMessageString(player, durabilityFormatPath,
+                    currentReplacer, maxReplacer);
+        } else {
+            durabilityFormat = languageManager.getMessageString(player, durabilityFormatPath);
         }
 
-        String durabilityFormatPathPart = (hasDurability ? "durability-normal" : "durability-infinite");
-        String durabilityFormatPath = ("compressor-tool.lore." + durabilityFormatPathPart);
-        String durabilityFormat = languageManager.getMessageString(player, durabilityFormatPath, currentMaxReplacer);
-
         String fullPath = "compressor-tool.lore.format";
-        Replacer durabilityReplacer = new SimpleReplacer("{durability}", durabilityFormat);
+        Replacer durabilityReplacer = new StringReplacer("{durability}", durabilityFormat);
         String loreString = languageManager.getMessageString(player, fullPath, durabilityReplacer);
         String[] loreSplit = loreString.split(Pattern.quote("\n"));
 

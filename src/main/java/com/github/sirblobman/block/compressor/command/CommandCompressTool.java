@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.sirblobman.api.command.Command;
-import com.github.sirblobman.api.language.Replacer;
-import com.github.sirblobman.api.language.SimpleReplacer;
+import com.github.sirblobman.api.language.replacer.Replacer;
+import com.github.sirblobman.api.language.replacer.StringReplacer;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.manager.ToolManager;
@@ -49,16 +49,16 @@ public final class CommandCompressTool extends Command {
         ToolManager toolManager = this.plugin.getToolManager();
         ItemStack compressorTool = toolManager.createCompressorTool(target);
         if (ItemUtility.isAir(compressorTool)) {
-            sendMessage(sender, "invalid-configuration", null);
+            sendMessage(sender, "invalid-configuration");
             return true;
         }
 
         giveItems(target, compressorTool);
         String realTargetName = target.getName();
 
-        Replacer replacer = new SimpleReplacer("{target}", realTargetName);
+        Replacer replacer = new StringReplacer("{target}", realTargetName);
         sendMessage(sender, "tool-give", replacer);
-        sendMessage(target, "tool-get", null);
+        sendMessage(target, "tool-get");
         return true;
     }
 }

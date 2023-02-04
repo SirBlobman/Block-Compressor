@@ -39,6 +39,9 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     public void onEnable() {
         reloadConfiguration();
 
+        LanguageManager languageManager = getLanguageManager();
+        languageManager.onPluginEnable();
+
         registerCommands();
         registerListeners();
         registerUpdateChecker();
@@ -56,7 +59,7 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         configurationManager.reload("config.yml");
 
         LanguageManager languageManager = getLanguageManager();
-        languageManager.reloadLanguageFiles();
+        languageManager.reloadLanguages();
 
         CompressorRecipeManager compressorRecipeManager = getCompressorRecipeManager();
         compressorRecipeManager.reloadRecipes();
@@ -94,6 +97,6 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     private String getDefaultLanguageCode() {
         LanguageManager languageManager = getLanguageManager();
         Language defaultLanguage = languageManager.getDefaultLanguage();
-        return (defaultLanguage == null ? "none" : defaultLanguage.getLanguageCode());
+        return (defaultLanguage == null ? "none" : defaultLanguage.getLanguageName());
     }
 }
