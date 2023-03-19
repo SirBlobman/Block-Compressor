@@ -45,7 +45,7 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         registerCommands();
         registerListeners();
         registerUpdateChecker();
-        registerbStats();
+        register_bStats();
     }
 
     @Override
@@ -89,7 +89,7 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         updateManager.addResource(this, 88448L);
     }
 
-    private void registerbStats() {
+    private void register_bStats() {
         Metrics metrics = new Metrics(this, 16253);
         metrics.addCustomChart(new SimplePie("selected_language", this::getDefaultLanguageCode));
     }
