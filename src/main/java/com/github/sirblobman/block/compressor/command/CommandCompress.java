@@ -3,6 +3,8 @@ package com.github.sirblobman.block.compressor.command;
 import java.util.Collections;
 import java.util.List;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
@@ -14,19 +16,19 @@ import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 public final class CommandCompress extends PlayerCommand {
     private final BlockCompressorPlugin plugin;
 
-    public CommandCompress(BlockCompressorPlugin plugin) {
+    public CommandCompress(@NotNull BlockCompressorPlugin plugin) {
         super(plugin, "compress");
         setPermissionName("block.compressor.command.compress");
         this.plugin = plugin;
     }
 
     @Override
-    public List<String> onTabComplete(Player player, String[] args) {
+    public @NotNull List<String> onTabComplete(@NotNull Player player, String @NotNull [] args) {
         return Collections.emptyList();
     }
 
     @Override
-    public boolean execute(Player player, String[] args) {
+    public boolean execute(@NotNull Player player, String @NotNull [] args) {
         Location dropLocation = player.getLocation();
         PlayerInventory playerInventory = player.getInventory();
         CompressorRecipeManager compressorRecipeManager = getCompressorRecipeManager();
@@ -39,11 +41,11 @@ public final class CommandCompress extends PlayerCommand {
         return true;
     }
 
-    private BlockCompressorPlugin getBlockCompressorPlugin() {
+    private @NotNull BlockCompressorPlugin getBlockCompressorPlugin() {
         return this.plugin;
     }
 
-    private CompressorRecipeManager getCompressorRecipeManager() {
+    private @NotNull CompressorRecipeManager getCompressorRecipeManager() {
         BlockCompressorPlugin plugin = getBlockCompressorPlugin();
         return plugin.getCompressorRecipeManager();
     }

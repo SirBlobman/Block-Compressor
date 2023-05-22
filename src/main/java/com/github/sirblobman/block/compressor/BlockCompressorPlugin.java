@@ -1,21 +1,23 @@
 package com.github.sirblobman.block.compressor;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.github.sirblobman.api.bstats.bukkit.Metrics;
-import com.github.sirblobman.api.bstats.charts.SimplePie;
 import com.github.sirblobman.api.configuration.ConfigurationManager;
 import com.github.sirblobman.api.core.CorePlugin;
 import com.github.sirblobman.api.language.Language;
 import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.ConfigurablePlugin;
-import com.github.sirblobman.api.update.UpdateManager;
+import com.github.sirblobman.api.update.SpigotUpdateManager;
 import com.github.sirblobman.block.compressor.command.CommandBlockCompressor;
 import com.github.sirblobman.block.compressor.command.CommandCompress;
 import com.github.sirblobman.block.compressor.command.CommandCompressTool;
 import com.github.sirblobman.block.compressor.listener.ListenerCompressorTool;
 import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 import com.github.sirblobman.block.compressor.manager.ToolManager;
+import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
+import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
 
 public final class BlockCompressorPlugin extends ConfigurablePlugin {
     private final CompressorRecipeManager compressorRecipeManager;
@@ -65,11 +67,11 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         compressorRecipeManager.reloadRecipes();
     }
 
-    public CompressorRecipeManager getCompressorRecipeManager() {
+    public @NotNull CompressorRecipeManager getCompressorRecipeManager() {
         return this.compressorRecipeManager;
     }
 
-    public ToolManager getToolManager() {
+    public @NotNull ToolManager getToolManager() {
         return this.toolManager;
     }
 
@@ -85,7 +87,7 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
 
     private void registerUpdateChecker() {
         CorePlugin corePlugin = JavaPlugin.getPlugin(CorePlugin.class);
-        UpdateManager updateManager = corePlugin.getUpdateManager();
+        SpigotUpdateManager updateManager = corePlugin.getSpigotUpdateManager();
         updateManager.addResource(this, 88448L);
     }
 
@@ -94,7 +96,7 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
         metrics.addCustomChart(new SimplePie("selected_language", this::getDefaultLanguageCode));
     }
 
-    private String getDefaultLanguageCode() {
+    private @NotNull String getDefaultLanguageCode() {
         LanguageManager languageManager = getLanguageManager();
         Language defaultLanguage = languageManager.getDefaultLanguage();
         return (defaultLanguage == null ? "none" : defaultLanguage.getLanguageName());

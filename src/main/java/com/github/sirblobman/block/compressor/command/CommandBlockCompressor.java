@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,13 +13,13 @@ import com.github.sirblobman.api.command.Command;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 
 public final class CommandBlockCompressor extends Command {
-    public CommandBlockCompressor(BlockCompressorPlugin plugin) {
+    public CommandBlockCompressor(@NotNull BlockCompressorPlugin plugin) {
         super(plugin, "block-compressor");
         setPermissionName("block.compressor.command.block-compressor");
     }
 
     @Override
-    protected List<String> onTabComplete(CommandSender sender, String[] args) {
+    protected @NotNull List<String> onTabComplete(@NotNull CommandSender sender, String @NotNull [] args) {
         if (args.length == 1) {
             return Collections.singletonList("reload");
         }
@@ -26,7 +28,7 @@ public final class CommandBlockCompressor extends Command {
     }
 
     @Override
-    protected boolean execute(CommandSender sender, String[] args) {
+    protected boolean execute(@NotNull CommandSender sender, String @NotNull [] args) {
         if (args.length < 1) {
             return false;
         }

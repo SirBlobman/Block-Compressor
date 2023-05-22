@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -18,14 +20,14 @@ import com.github.sirblobman.block.compressor.manager.ToolManager;
 public final class CommandCompressTool extends Command {
     private final BlockCompressorPlugin plugin;
 
-    public CommandCompressTool(BlockCompressorPlugin plugin) {
+    public CommandCompressTool(@NotNull BlockCompressorPlugin plugin) {
         super(plugin, "compress-tool");
         setPermissionName("block.compressor.command.compress-tool");
         this.plugin = plugin;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, String[] args) {
+    public @NotNull List<String> onTabComplete(@NotNull CommandSender sender, String[] args) {
         if (args.length == 1) {
             Set<String> valueSet = getOnlinePlayerNames();
             return getMatching(args[0], valueSet);
@@ -35,7 +37,7 @@ public final class CommandCompressTool extends Command {
     }
 
     @Override
-    public boolean execute(CommandSender sender, String[] args) {
+    public boolean execute(@NotNull CommandSender sender, String @NotNull [] args) {
         if (args.length == 0 && !(sender instanceof Player)) {
             return false;
         }
@@ -46,7 +48,7 @@ public final class CommandCompressTool extends Command {
             return true;
         }
 
-        ToolManager toolManager = this.plugin.getToolManager();
+        ToolManager toolManager = getToolManager();
         ItemStack compressorTool = toolManager.createCompressorTool(target);
         if (ItemUtility.isAir(compressorTool)) {
             sendMessage(sender, "invalid-configuration");
@@ -60,5 +62,14 @@ public final class CommandCompressTool extends Command {
         sendMessage(sender, "tool-give", replacer);
         sendMessage(target, "tool-get");
         return true;
+    }
+
+    private @NotNull BlockCompressorPlugin getBlockCompressorPlugin() {
+        return this.plugin;
+    }
+
+    private @NotNull ToolManager getToolManager() {
+        BlockCompressorPlugin plugin = getBlockCompressorPlugin();
+        return plugin.getToolManager();
     }
 }

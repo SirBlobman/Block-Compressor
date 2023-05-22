@@ -18,10 +18,10 @@ import com.github.sirblobman.api.language.LanguageManager;
 import com.github.sirblobman.api.plugin.listener.PluginListener;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.VersionUtility;
-import com.github.sirblobman.api.xseries.XSound;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
 import com.github.sirblobman.block.compressor.manager.ToolManager;
+import com.github.sirblobman.api.shaded.xseries.XSound;
 
 public final class ListenerCompressorTool extends PluginListener<BlockCompressorPlugin> {
     public ListenerCompressorTool(BlockCompressorPlugin plugin) {

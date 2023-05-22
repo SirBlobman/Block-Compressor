@@ -25,9 +25,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.api.utility.VersionUtility;
-import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
 import com.github.sirblobman.block.compressor.object.CompressorRecipe;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class CompressorRecipeManager {
     private final BlockCompressorPlugin plugin;

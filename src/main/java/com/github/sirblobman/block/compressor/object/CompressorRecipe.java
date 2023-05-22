@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import org.jetbrains.annotations.NotNull;
+
 import org.bukkit.inventory.ItemStack;
 
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.Validate;
-import com.github.sirblobman.api.xseries.XMaterial;
-
-import org.jetbrains.annotations.NotNull;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class CompressorRecipe {
     private final XMaterial input;

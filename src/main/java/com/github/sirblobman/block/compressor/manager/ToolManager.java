@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Pattern;
 
+import org.jetbrains.annotations.Nullable;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -12,8 +14,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.sirblobman.api.adventure.adventure.text.Component;
-import com.github.sirblobman.api.adventure.adventure.text.minimessage.MiniMessage;
 import com.github.sirblobman.api.item.ItemBuilder;
 import com.github.sirblobman.api.language.ComponentHelper;
 import com.github.sirblobman.api.language.LanguageManager;
@@ -26,10 +26,10 @@ import com.github.sirblobman.api.nms.ItemHandler;
 import com.github.sirblobman.api.nms.MultiVersionHandler;
 import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.Validate;
-import com.github.sirblobman.api.xseries.XMaterial;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
-
-import org.jetbrains.annotations.Nullable;
+import com.github.sirblobman.api.shaded.adventure.text.Component;
+import com.github.sirblobman.api.shaded.adventure.text.minimessage.MiniMessage;
+import com.github.sirblobman.api.shaded.xseries.XMaterial;
 
 public final class ToolManager {
     private final BlockCompressorPlugin plugin;
