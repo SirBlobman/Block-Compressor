@@ -1,0 +1,265 @@
+[SIZE=5][B]Supported Spigot Versions:[/B][/SIZE]
+1.8.8, 1.12.2, 1.16.5, 1.17.1, 1.18.2, 1.19.2
+
+[SIZE=5][COLOR=#FF0000][B]Description:[/B][/COLOR][/SIZE]
+Block Compressor is a configurable plugin used to compress ores into their respective blocks.
+
+[SIZE=5][B][COLOR=#FF0000]Dependencies:[/COLOR][/B][/SIZE]
+[LIST]
+[*][URL='https://www.spigotmc.org/resources/83189/']BlueSlimeCore[/URL]
+[/LIST]
+
+[SIZE=5][COLOR=#FF0000][B]Features:[/B][/COLOR][/SIZE]
+[LIST]
+[*]Support for Spigot, Paper, and Folia servers.
+[*]Compress ores into blocks.
+[*]Compress nuggets into ingots.
+[*]Configurable compression recipes. (input type, output type, amount)
+[*]Configurable compression tool item for chests.
+[*]Durability option for the compression tool.
+[*]Configurable config messages.
+[/LIST]
+
+[SIZE=5][COLOR=#FF0000][B]Commands and Permissions:[/B][/COLOR][/SIZE]
+[LIST]
+[*][B]/compress[/B]: Compress all of the blocks in your inventory. [I]block.compressor.command.compress[/I]
+[*][B]/compress-tool [player][/B]: Give a compression tool to yourself or another player. [I]block.compressor.command.compress-tool[/I]
+[/LIST]
+
+[SIZE=5][COLOR=#FF0000][B]Configuration:[/B][/COLOR][/SIZE]
+[SPOILER='config.yml'][CODE=YAML]
+## Block Compressor Main Configuration
+
+# Set this to true if you are having issues and wish to see more console output.
+# Default: false
+debug-mode: false
+[/CODE][/SPOILER]
+[SPOILER='tools.yml'][CODE=YAML]
+## Block Compressor Tool Configuration File
+## This files lets you add, modify, and remove the different tools
+## You can give tools to players with the `/compressor-tool <player> <id>` command.
+
+# This is the 'id' of the tool.
+# The id is used in the command above.
+# You can add or remove as many tools as you want.
+# If you remove a tool id, tools made with that ID may stop working.
+# `/compressor-tool <player> default`
+default:
+  # The XMaterial name of the item
+  material: GOLDEN_HOE
+
+  # How much durability does the tool have?
+  # Default: 200
+  # Valid Values: 1-2,000,000,000 or infinity.
+  durability: 100
+
+  # The name of the tool.
+  # Valid placeholders: {current_durability}, {max_durability}
+  display-name: "<white>Compressor Tool</white>"
+
+  # The description of the tool.
+  # Valid placeholders: {current_durability}, {max_durability}
+  lore:
+    - "<gray>Right click a block with an</gray>"
+    - "<gray>inventory to compress the</gray>"
+    - "<gray>contents.</gray>"
+    - "<dark_gray><bold>Durability:</bold></dark_gray> <gray>{current_durability} / {max_durability}</gray>"
+
+  ## Optional Extra Data
+  # model: integer, custom model data, requires 1.14.4 or higher.
+  # glowing: boolean, add an enchant effect to the item.
+
+# `/compressor-tool <player> tier_1_example`
+tier_1_example:
+  material: DIAMOND_HOE
+  durability: infinity
+  display-name: "<gold>Compressor Tool of Infinity</gold>"
+  lore:
+    - "<gray>Right click a block with an</gray>"
+    - "<gray>inventory to compress the</gray>"
+    - "<gray>contents.</gray>"
+    - "<dark_gray><bold>Durability:</bold></dark_gray> <gray>Infinite</gray>"
+  model: 101
+  glowing: true
+[/CODE][/SPOILER]
+[SPOILER='recipes.yml'][CODE=YAML]
+## Block Compressor Recipe Configuration File
+## This files lets you add, modify, and remove recipes.
+## All tools can access all recipes.
+
+## Ingredient Types
+## All ingredient types require a 'quantity'. This is the amount of items for the ingredient.
+## MATERIAL
+## Requires 'material' to be an XMaterial value.
+## CUSTOM_ITEM
+## Requires a `base64` string of an item.
+## You can convert items using the '/item-to-base64' command from BlueSlimeCore.
+
+# 'coal_block' is the recipe ID. This is only used to keep track of recipes in the code.
+coal_block:
+  # Input Item: See above for ingredient types and format.
+  input:
+    type: MATERIAL
+    material: COAL
+    quantity: 9
+  # Output Item: See above for ingredient types and format.
+  output:
+    type: MATERIAL
+    material: COAL_BLOCK
+
+# Iron Nugget was added in Minecraft 1.11
+iron_ingot:
+  input:
+    type: MATERIAL
+    material: IRON_NUGGET
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: IRON_INGOT
+
+iron_block:
+  input:
+    type: MATERIAL
+    material: IRON_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: IRON_BLOCK
+
+lapis_block:
+  input:
+    type: MATERIAL
+    material: LAPIS_LAZULI
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: LAPIS_BLOCK
+
+gold_block:
+  input:
+    type: MATERIAL
+    material: GOLD_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: GOLD_BLOCK
+
+gold_ingot:
+  input:
+    type: MATERIAL
+    material: GOLD_NUGGET
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: GOLD_INGOT
+
+quartz_block:
+  input:
+    type: MATERIAL
+    material: QUARTZ
+    quantity: 4
+  output:
+    type: MATERIAL
+    material: QUARTZ_BLOCK
+
+redstone:
+  input:
+    type: MATERIAL
+    material: REDSTONE
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: REDSTONE_BLOCK
+
+diamond_block:
+  input:
+    type: MATERIAL
+    material: DIAMOND
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: DIAMOND_BLOCK
+
+emerald_block:
+  input:
+    type: MATERIAL
+    material: EMERALD
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: EMERALD_BLOCK
+
+# Netherite was added in Minecraft 1.16
+netherite_block:
+  input:
+    type: MATERIAL
+    material: NETHERITE_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: NETHERITE_BLOCK
+
+# Amethyst, Raw Copper, Raw Iron, Raw Gold, and Copper were added in Minecraft 1.17
+amethyst_block:
+  input:
+    type: MATERIAL
+    material: AMETHYST_SHARD
+    quantity: 4
+  output:
+    type: MATERIAL
+    material: AMETHYST_BLOCK
+
+raw_copper_block:
+  input:
+    type: MATERIAL
+    material: RAW_COPPER
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: RAW_COPPER_BLOCK
+
+copper_block:
+  input:
+    type: MATERIAL
+    material: COPPER_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: COPPER_BLOCK
+
+raw_iron_block:
+  input:
+    type: MATERIAL
+    material: RAW_IRON
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: RAW_IRON_BLOCK
+
+raw_gold_block:
+  input:
+    type: MATERIAL
+    material: RAW_GOLD
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: RAW_GOLD_BLOCK
+
+custom_iron_block:
+  input:
+    type: CUSTOM_ITEM
+    # Example: Custom iron ingot, CustomModelData: 1, Display Name: "Custom Iron"
+    base64: "H4sIAAAAAAAA/yXMMQqDQBAF0G+MRLZJI9ayx7A1jUW8ggzuKgPuTtARDMG7K6R/PAPkuLFDETj6YaFRa14k9hwnUYNUaUrxbLZVJbzF+flFSgASg4fj9TPTN8e9o+BR/qz6XW1t/7xqr8gel0XWyBY1wQkhRfwFbwAAAA=="
+    quantity: 9
+  output:
+    type: CUSTOM_ITEM
+    # Example: Custom iron block, CustomModelData: 2, Display Name: "Block of Custom Iron"
+    base64: "H4sIAAAAAAAA/yXMQQ6CMBAF0A9IIN24cU/TY7AUNy7gCmakxTS2HQNDojHeXQ0HeE8BNXJvcYg+uXGmSVo/c7pcA493hULoVmDfrYtw7Nm6cCIhALlCZf3yCPSqsRsoOjRvI+4ppjXHP9Y86c3p8280HyBD2fGaJMMXdsBF0ngAAAA="
+[/CODE][/SPOILER]
+
+[SIZE=5][B][COLOR=#FF0000]Help and Support:[/COLOR][/B][/SIZE]
+Click the image to join my discord for support. You can also join if you have feature requests or if you just want to chat with other users.
+[URL='https://discord.gg/XMq2agT'][IMG]https://discordapp.com/assets/fc0b01fe10a0b8c602fb0106d8189d9b.png[/IMG][/URL]
+
+[SIZE=5][B][COLOR=#FF0000]Extra Information:[/COLOR][/B][/SIZE]
+Please do not use a review to leave bug reports or errors. I am not able to help you through a review.
