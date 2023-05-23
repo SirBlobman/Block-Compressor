@@ -13,18 +13,18 @@ import com.github.sirblobman.api.update.SpigotUpdateManager;
 import com.github.sirblobman.block.compressor.command.CommandBlockCompressor;
 import com.github.sirblobman.block.compressor.command.CommandCompress;
 import com.github.sirblobman.block.compressor.command.CommandCompressTool;
-import com.github.sirblobman.block.compressor.listener.ListenerCompressorTool;
-import com.github.sirblobman.block.compressor.manager.CompressorRecipeManager;
-import com.github.sirblobman.block.compressor.manager.ToolManager;
+import com.github.sirblobman.block.compressor.recipe.RecipeManager;
+import com.github.sirblobman.block.compressor.tool.ListenerTool;
+import com.github.sirblobman.block.compressor.tool.ToolManager;
 import com.github.sirblobman.api.shaded.bstats.bukkit.Metrics;
 import com.github.sirblobman.api.shaded.bstats.charts.SimplePie;
 
 public final class BlockCompressorPlugin extends ConfigurablePlugin {
-    private final CompressorRecipeManager compressorRecipeManager;
+    private final RecipeManager recipeManager;
     private final ToolManager toolManager;
 
     public BlockCompressorPlugin() {
-        this.compressorRecipeManager = new CompressorRecipeManager(this);
+        this.recipeManager = new RecipeManager(this);
         this.toolManager = new ToolManager(this);
     }
 
@@ -32,6 +32,8 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     public void onLoad() {
         ConfigurationManager configurationManager = getConfigurationManager();
         configurationManager.saveDefault("config.yml");
+        configurationManager.saveDefault("recipes.yml");
+        configurationManager.saveDefault("tools.yml");
 
         LanguageManager languageManager = getLanguageManager();
         languageManager.saveDefaultLanguageFiles();
@@ -59,16 +61,21 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     protected void reloadConfiguration() {
         ConfigurationManager configurationManager = getConfigurationManager();
         configurationManager.reload("config.yml");
+        configurationManager.reload("recipes.yml");
+        configurationManager.reload("tools.yml");
 
         LanguageManager languageManager = getLanguageManager();
         languageManager.reloadLanguages();
 
-        CompressorRecipeManager compressorRecipeManager = getCompressorRecipeManager();
-        compressorRecipeManager.reloadRecipes();
+        RecipeManager recipeManager = getRecipeManager();
+        recipeManager.loadRecipes();
+
+        ToolManager toolManager = getToolManager();
+        toolManager.loadTools();
     }
 
-    public @NotNull CompressorRecipeManager getCompressorRecipeManager() {
-        return this.compressorRecipeManager;
+    public @NotNull RecipeManager getRecipeManager() {
+        return this.recipeManager;
     }
 
     public @NotNull ToolManager getToolManager() {
@@ -82,7 +89,7 @@ public final class BlockCompressorPlugin extends ConfigurablePlugin {
     }
 
     private void registerListeners() {
-        new ListenerCompressorTool(this).register();
+        new ListenerTool(this).register();
     }
 
     private void registerUpdateChecker() {

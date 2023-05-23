@@ -3,10 +3,9 @@
 ## The default language is "en_us", also known as English (United States).
 ## Context will be added as YAML comments above the string.
 
-## The color scheme for messages is green and red.
-## Command feedback that is successful should always be green.
-## Error messages should always be red.
-## Variables in messages can be gray or white.
+## Command feedback that is successful is green.
+## Error messages are red.
+## Variables in messages are gray.
 
 ## Messages use the MiniMessage format in non-strict mode.
 ## More information about MiniMessage can be found here:
@@ -18,6 +17,9 @@ decimal-format: "0.00"
 
 error:
   no-permission: "<red>Missing Permission: <gray>{permission}</gray>.</red>"
+  invalid-target: "<red><gray>{target}</gray> is not online or does not exist.</red>"
+  missing-target: "<red>This command requires a player target.</red>"
+  invalid-tool: "<red>Could not find a tool with id <gray>{id}</gray>.</red>"
 
 compress-successful: "<green>Successfully compressed all items.</green>"
 compress-failure: "<red>There were no items to compress.</red>"
@@ -26,18 +28,4 @@ tool-give: "<green>You gave a block compressor tool to <gray>{target}</gray>.</g
 tool-get: "<green>You have received a block compressor tool.</green>"
 
 reload-success: "<green>Successfully reloaded the configuration and language files.</green>"
-invalid-configuration: "<red>The compressor tool item is mis-configured.</red>"
-
-compressor-tool:
-  display-name:
-    format: "<white>Compressor Tool</white>"
-    durability-normal: "<gray>{current}</gray>"
-    durability-infinite: "Infinite"
-  lore:
-    format:
-      - "<gray>Right click a block with an</gray>"
-      - "<gray>inventory to compress the</gray>"
-      - "<gray>contents.</gray>"
-      - "<dark_gray><bold>Durability:</bold></dark_gray> <gray>{durability}</gray>"
-    durability-normal: "<gray>{current} <bold>/</bold> {max}</gray>"
-    durability-infinite: "Infinite"
+invalid-configuration: "<red>The compressor tool item is not configured properly.</red>"

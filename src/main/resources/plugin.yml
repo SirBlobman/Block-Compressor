@@ -30,7 +30,9 @@ commands:
 
   compress-tool:
     description: "Give yourself or another player a tool to compress non-player inventories."
-    usage: "/<command> [player]"
+    usage: "/<command> <id> [player]"
+    aliases:
+      - "compressor-tool"
 
 permissions:
   block.compressor.command.block-compressor:

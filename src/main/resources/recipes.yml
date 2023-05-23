@@ -1,0 +1,172 @@
+## Block Compressor Recipe Configuration File
+## This files lets you add, modify, and remove recipes.
+## All tools can access all recipes.
+
+## Ingredient Types
+## All ingredient types require a 'quantity'. This is the amount of items for the ingredient.
+## MATERIAL
+## Requires 'material' to be an XMaterial value.
+## CUSTOM_ITEM
+## Requires a `base64` string of an item.
+## You can convert items using the '/item-to-base64' command from BlueSlimeCore.
+
+# 'coal_block' is the recipe ID. This is only used to keep track of recipes in the code.
+coal_block:
+  # Input Item: See above for ingredient types and format.
+  input:
+    type: MATERIAL
+    material: COAL
+    quantity: 9
+  # Output Item: See above for ingredient types and format.
+  output:
+    type: MATERIAL
+    material: COAL_BLOCK
+
+# Iron Nugget was added in Minecraft 1.11
+iron_ingot:
+  input:
+    type: MATERIAL
+    material: IRON_NUGGET
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: IRON_INGOT
+
+iron_block:
+  input:
+    type: MATERIAL
+    material: IRON_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: IRON_BLOCK
+
+lapis_block:
+  input:
+    type: MATERIAL
+    material: LAPIS_LAZULI
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: LAPIS_BLOCK
+
+gold_block:
+  input:
+    type: MATERIAL
+    material: GOLD_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: GOLD_BLOCK
+
+gold_ingot:
+  input:
+    type: MATERIAL
+    material: GOLD_NUGGET
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: GOLD_INGOT
+
+quartz_block:
+  input:
+    type: MATERIAL
+    material: QUARTZ
+    quantity: 4
+  output:
+    type: MATERIAL
+    material: QUARTZ_BLOCK
+
+redstone:
+  input:
+    type: MATERIAL
+    material: REDSTONE
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: REDSTONE_BLOCK
+
+diamond_block:
+  input:
+    type: MATERIAL
+    material: DIAMOND
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: DIAMOND_BLOCK
+
+emerald_block:
+  input:
+    type: MATERIAL
+    material: EMERALD
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: EMERALD_BLOCK
+
+# Netherite was added in Minecraft 1.16
+netherite_block:
+  input:
+    type: MATERIAL
+    material: NETHERITE_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: NETHERITE_BLOCK
+
+# Amethyst, Raw Copper, Raw Iron, Raw Gold, and Copper were added in Minecraft 1.17
+amethyst_block:
+  input:
+    type: MATERIAL
+    material: AMETHYST_SHARD
+    quantity: 4
+  output:
+    type: MATERIAL
+    material: AMETHYST_BLOCK
+
+raw_copper_block:
+  input:
+    type: MATERIAL
+    material: RAW_COPPER
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: RAW_COPPER_BLOCK
+
+copper_block:
+  input:
+    type: MATERIAL
+    material: COPPER_INGOT
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: COPPER_BLOCK
+
+raw_iron_block:
+  input:
+    type: MATERIAL
+    material: RAW_IRON
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: RAW_IRON_BLOCK
+
+raw_gold_block:
+  input:
+    type: MATERIAL
+    material: RAW_GOLD
+    quantity: 9
+  output:
+    type: MATERIAL
+    material: RAW_GOLD_BLOCK
+
+custom_iron_block:
+  input:
+    type: CUSTOM_ITEM
+    # Example: Custom iron ingot, CustomModelData: 1, Display Name: "Custom Iron"
+    base64: "H4sIAAAAAAAA/yXMMQqDQBAF0G+MRLZJI9ayx7A1jUW8ggzuKgPuTtARDMG7K6R/PAPkuLFDETj6YaFRa14k9hwnUYNUaUrxbLZVJbzF+flFSgASg4fj9TPTN8e9o+BR/qz6XW1t/7xqr8gel0XWyBY1wQkhRfwFbwAAAA=="
+    quantity: 9
+  output:
+    type: CUSTOM_ITEM
+    # Example: Custom iron block, CustomModelData: 2, Display Name: "Block of Custom Iron"
+    base64: "H4sIAAAAAAAA/yXMQQ6CMBAF0A9IIN24cU/TY7AUNy7gCmakxTS2HQNDojHeXQ0HeE8BNXJvcYg+uXGmSVo/c7pcA493hULoVmDfrYtw7Nm6cCIhALlCZf3yCPSqsRsoOjRvI+4ppjXHP9Y86c3p8280HyBD2fGaJMMXdsBF0ngAAAA="

@@ -2,20 +2,21 @@ package com.github.sirblobman.block.compressor.command;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 import org.jetbrains.annotations.NotNull;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.sirblobman.api.command.Command;
 import com.github.sirblobman.block.compressor.BlockCompressorPlugin;
+import com.github.sirblobman.block.compressor.tool.ToolManager;
 
 public final class CommandBlockCompressor extends Command {
+    private final BlockCompressorPlugin plugin;
+
     public CommandBlockCompressor(@NotNull BlockCompressorPlugin plugin) {
         super(plugin, "block-compressor");
-        setPermissionName("block.compressor.command.block-compressor");
+        this.plugin = plugin;
     }
 
     @Override
@@ -29,19 +30,20 @@ public final class CommandBlockCompressor extends Command {
 
     @Override
     protected boolean execute(@NotNull CommandSender sender, String @NotNull [] args) {
-        if (args.length < 1) {
-            return false;
-        }
-
-        String sub = args[0].toLowerCase(Locale.US);
-        if (!sub.equals("reload")) {
-            return false;
-        }
-
-        JavaPlugin plugin = getPlugin();
+        BlockCompressorPlugin plugin = getBlockCompressorPlugin();
         plugin.reloadConfig();
 
-        sendMessage(sender, "reload-success");
+        ToolManager toolManager = plugin.getToolManager();
+        if (toolManager.getTools().isEmpty()) {
+            sendMessage(sender, "invalid-configuration");
+        } else {
+            sendMessage(sender, "reload-success");
+        }
+
         return true;
+    }
+
+    private @NotNull BlockCompressorPlugin getBlockCompressorPlugin() {
+        return this.plugin;
     }
 }

@@ -1,0 +1,46 @@
+## Block Compressor Tool Configuration File
+## This files lets you add, modify, and remove the different tools
+## You can give tools to players with the `/compressor-tool <player> <id>` command.
+
+# This is the 'id' of the tool.
+# The id is used in the command above.
+# You can add or remove as many tools as you want.
+# If you remove a tool id, tools made with that ID may stop working.
+# `/compressor-tool <player> default`
+default:
+  # The XMaterial name of the item
+  material: GOLDEN_HOE
+
+  # How much durability does the tool have?
+  # Default: 200
+  # Valid Values: 1-2,000,000,000 or infinity.
+  durability: 100
+
+  # The name of the tool.
+  # Valid placeholders: {current_durability}, {max_durability}
+  display-name: "<white>Compressor Tool</white>"
+
+  # The description of the tool.
+  # Valid placeholders: {current_durability}, {max_durability}
+  lore:
+    - "<gray>Right click a block with an</gray>"
+    - "<gray>inventory to compress the</gray>"
+    - "<gray>contents.</gray>"
+    - "<dark_gray><bold>Durability:</bold></dark_gray> <gray>{current_durability} / {max_durability}</gray>"
+
+  ## Optional Extra Data
+  # model: integer, custom model data, requires 1.14.4 or higher.
+  # glowing: boolean, add an enchant effect to the item.
+
+# `/compressor-tool <player> tier_1_example`
+tier_1_example:
+  material: DIAMOND_HOE
+  durability: infinity
+  display-name: "<gold>Compressor Tool of Infinity</gold>"
+  lore:
+    - "<gray>Right click a block with an</gray>"
+    - "<gray>inventory to compress the</gray>"
+    - "<gray>contents.</gray>"
+    - "<dark_gray><bold>Durability:</bold></dark_gray> <gray>Infinite</gray>"
+  model: 101
+  glowing: true
