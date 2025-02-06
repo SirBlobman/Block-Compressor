@@ -11,32 +11,31 @@ import com.github.sirblobman.api.utility.ItemUtility;
 import com.github.sirblobman.api.utility.Validate;
 import com.github.sirblobman.block.compressor.recipe.ingredient.Ingredient;
 
-public final class Recipe {
-    private final String id;
-    private final Ingredient input;
-    private final Ingredient output;
-
+public record Recipe(String id, Ingredient input, Ingredient output) {
     public Recipe(@NotNull String id, @NotNull Ingredient input, @NotNull Ingredient output) {
         this.id = Validate.notEmpty(id, "id must not be empty!");
         this.input = input;
         this.output = output;
     }
 
-    public @NotNull String getId() {
+    @Override
+    public @NotNull String id() {
         return this.id;
     }
 
-    public @NotNull Ingredient getInput() {
+    @Override
+    public @NotNull Ingredient input() {
         return this.input;
     }
 
-    public @NotNull Ingredient getOutput() {
+    @Override
+    public @NotNull Ingredient output() {
         return this.output;
     }
 
     public ItemStack @NotNull [] convert(int inputCount) {
-        Ingredient input = getInput();
-        Ingredient output = getOutput();
+        Ingredient input = input();
+        Ingredient output = output();
         int amount = input.getQuantity();
 
         int outputCount = (inputCount / amount);

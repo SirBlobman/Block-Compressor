@@ -178,7 +178,7 @@ public final class ToolManager {
         Collection<Recipe> recipes = recipeMap.values();
 
         for (Recipe recipe : recipes) {
-            Ingredient input = recipe.getInput();
+            Ingredient input = recipe.input();
             int removeCount = removeAndCount(input, inventory);
             if (removeCount <= 0) {
                 continue;

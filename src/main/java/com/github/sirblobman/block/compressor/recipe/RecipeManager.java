@@ -125,13 +125,10 @@ public final class RecipeManager {
             return null;
         }
 
-        switch (type) {
-            case MATERIAL: return loadMaterial(section);
-            case CUSTOM_ITEM: return loadCustomItem(section);
-            default: break;
-        }
-
-        return null;
+        return switch (type) {
+            case MATERIAL -> loadMaterial(section);
+            case CUSTOM_ITEM -> loadCustomItem(section);
+        };
     }
 
     private @Nullable Ingredient loadMaterial(@NotNull ConfigurationSection section) {

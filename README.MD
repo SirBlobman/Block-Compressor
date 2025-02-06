@@ -4,7 +4,8 @@ A configurable plugin used to compress ores into their respective blocks.
 
 ## Requirements
 
-- [Spigot](https://www.spigotmc.org/), [Paper](https://papermc.io/downloads/paper), or [Folia](https://papermc.io/software/folia) 1.18.2-1.21.4
+- Java 21
+- [Spigot](https://www.spigotmc.org/), [Paper](https://papermc.io/downloads/paper), or [Folia](https://papermc.io/software/folia) 1.21.4
 - [BlueSlimeCore](https://www.spigotmc.org/resources/83189/)
 
 ## Downloads
