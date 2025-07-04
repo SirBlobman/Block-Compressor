@@ -164,9 +164,11 @@ custom_iron_block:
   input:
     type: CUSTOM_ITEM
     # Example: Custom iron ingot, CustomModelData: 1, Display Name: "Custom Iron"
+    # You can set any ItemStack here. Hold an item in your main hand and use the BlueSlimeCore command '/item-to-base64'.
     base64: "H4sIAAAAAAAA/yXMMQqDQBAF0G+MRLZJI9ayx7A1jUW8ggzuKgPuTtARDMG7K6R/PAPkuLFDETj6YaFRa14k9hwnUYNUaUrxbLZVJbzF+flFSgASg4fj9TPTN8e9o+BR/qz6XW1t/7xqr8gel0XWyBY1wQkhRfwFbwAAAA=="
     quantity: 9
   output:
     type: CUSTOM_ITEM
     # Example: Custom iron block, CustomModelData: 2, Display Name: "Block of Custom Iron"
+    # You can set any ItemStack here. Hold an item in your main hand and use the BlueSlimeCore command '/item-to-base64'.
     base64: "H4sIAAAAAAAA/yXMQQ6CMBAF0A9IIN24cU/TY7AUNy7gCmakxTS2HQNDojHeXQ0HeE8BNXJvcYg+uXGmSVo/c7pcA493hULoVmDfrYtw7Nm6cCIhALlCZf3yCPSqsRsoOjRvI+4ppjXHP9Y86c3p8280HyBD2fGaJMMXdsBF0ngAAAA="
