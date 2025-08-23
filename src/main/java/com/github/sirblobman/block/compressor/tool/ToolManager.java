@@ -103,7 +103,7 @@ public final class ToolManager {
         }
 
         Optional<XMaterial> optionalMaterial = XMaterial.matchXMaterial(materialName);
-        if (!optionalMaterial.isPresent()) {
+        if (optionalMaterial.isEmpty()) {
             printDebug("XMaterial value '" + materialName + "' does not exist.");
             return;
         }
@@ -154,11 +154,9 @@ public final class ToolManager {
             }
 
             ItemMeta itemMeta = item.getItemMeta();
-            if (itemMeta instanceof BlockStateMeta) {
-                BlockStateMeta blockStateMeta = (BlockStateMeta) itemMeta;
+            if (itemMeta instanceof BlockStateMeta blockStateMeta) {
                 BlockState blockState = blockStateMeta.getBlockState();
-                if (canCompress(blockState) && blockState instanceof InventoryHolder) {
-                    InventoryHolder holder = (InventoryHolder) blockState;
+                if (canCompress(blockState) && blockState instanceof InventoryHolder holder) {
                     Inventory itemInventory = holder.getInventory();
 
                     boolean compress = compress(location, itemInventory);

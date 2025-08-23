@@ -1,4 +1,3 @@
-val coreVersion = fetchProperty("version.core", "invalid")
 val baseVersion = fetchProperty("version.base", "invalid")
 val betaString = fetchProperty("version.beta", "false")
 val jenkinsBuildNumber = fetchEnv("BUILD_NUMBER", null, "Unofficial")
@@ -48,8 +47,8 @@ repositories {
 
 dependencies {
     compileOnly("org.jetbrains:annotations:26.0.2")
-    compileOnly("org.spigotmc:spigot-api:1.21.7-R0.1-SNAPSHOT")
-    compileOnly("com.github.sirblobman.api:core:$coreVersion")
+    compileOnly("org.spigotmc:spigot-api:1.21.8-R0.1-SNAPSHOT")
+    compileOnly("com.github.sirblobman.api:core:2.9-SNAPSHOT")
 }
 
 tasks {
